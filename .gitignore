@@ -1,0 +1,4 @@
+# IntelliJ stuff
+# User-specific stuff
+.idea/
+*.iml
