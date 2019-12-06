@@ -2,9 +2,7 @@ package engine;
 /*
 Emery Bacon         emery390@gmail.com
 Jeremy Tuthill      jtuthill@terpmail.umd.edu
-Yeamah Rainsbury    yeamahrainsbury@gmail.com
-Kemi Lin            kemilin34@gmail.com
- */
+*/
 
 
 
