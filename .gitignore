@@ -2,4 +2,6 @@
 # User-specific stuff
 .idea/
 *.iml
+
+# Build folder
 out/
