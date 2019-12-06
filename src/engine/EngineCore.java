@@ -1,8 +1,8 @@
 package engine;
 
 import engine.assets.AssetCenter;
-import game.Background;
-import game.player.Player;
+// import game.Background;
+// import game.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,12 +46,13 @@ public class EngineCore extends Canvas implements Runnable {
 
         // Starting the data collection/storage systems
         inputs = new InputHandler(this);
-        assets = new AssetCenter(path);
+        // assets = new AssetCenter(path);
         elements = new PriorityQueue<>();
 
         clock = new GameClock();
 
         // Add the sky and player
+        /*
         try {
             this.addObject(new Background(this));
             this.addObject(new Player(this));
@@ -59,6 +60,7 @@ public class EngineCore extends Canvas implements Runnable {
             // this.pixels = ((DataBufferInt) backGround.getRaster().getDataBuffer()).getData();
             System.err.println("Image resource not found");
         }
+        */
 
         // Set up the game window and interface
         this.initWindow();
@@ -195,7 +197,7 @@ public class EngineCore extends Canvas implements Runnable {
         }
 
         Graphics2D G = (Graphics2D) bs.getDrawGraphics();
-        G.setBackground(Color.LIGHT_GRAY);
+        G.setBackground(Color.BLUE);
         G.clearRect(0, 0, this.gameWidth * this.scale, this.gameHeight * this.scale);
 
         //calling the graphic methods of every element

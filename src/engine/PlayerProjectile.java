@@ -1,7 +1,5 @@
 package engine;
 
-import game.Teardrop;
-
 import java.awt.geom.AffineTransform;
 
 public class PlayerProjectile extends GameObject implements Moveable {
@@ -9,6 +7,7 @@ public class PlayerProjectile extends GameObject implements Moveable {
     static int speed = 5;
 
     Direction moveDir;
+
     public PlayerProjectile(
             EngineCore engine,
             AffineTransform transform,
@@ -16,7 +15,6 @@ public class PlayerProjectile extends GameObject implements Moveable {
         super(engine, transform);
         this.transform.scale(.5, .5);
         this.moveDir = direction;
-        this.addGraphicsComponent(new Teardrop(this));
     }
 
     @Override
