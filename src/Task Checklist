@@ -1,0 +1,24 @@
+List of items to implement within the game, by rough order of precedence
+
+Camera:
+- TODO: Camera Translation
+- TODO: Camera Scaling
+- TODO: Camera Rotation
+
+Mechanics:
+- TODO: Extending the map
+- TODO: Moving ship
+- TODO: Rendering other objects
+- TODO: Projectiles
+
+Collisions:
+- TODO: Rectangle-rectangle
+- TODO: Circle-circle
+- TODO: Rectangle-circle
+
+Visuals/Audio:
+- TODO: Create sprites
+- TODO: Sprite mapper
+- TODO: Animation
+- TODO: Audio
+- TODO: Lighting
