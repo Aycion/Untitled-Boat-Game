@@ -3,5 +3,8 @@
 .idea/
 *.iml
 
+# PS Project files
+*.psd
+
 # Build folder
 out/
