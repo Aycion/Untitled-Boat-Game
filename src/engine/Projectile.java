@@ -2,13 +2,13 @@ package engine;
 
 import java.awt.geom.AffineTransform;
 
-public class PlayerProjectile extends GameObject implements Moveable {
+public class Projectile extends GameObject implements Moveable {
 
     static int speed = 5;
 
     Direction moveDir;
 
-    public PlayerProjectile(
+    public Projectile(
             EngineCore engine,
             AffineTransform transform,
             Direction direction) {

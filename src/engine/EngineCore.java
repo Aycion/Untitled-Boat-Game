@@ -23,8 +23,6 @@ public class EngineCore extends Canvas implements Runnable {
 
     public PriorityQueue<GameObject> elements, tempElements;
 
-//    private int[] pixels;
-
     public static int frameCount = 0;
     public static int logicCount = 0;
 
