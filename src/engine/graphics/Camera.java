@@ -2,6 +2,7 @@ package engine.graphics;
 
 import engine.EngineCore;
 import engine.GameObject;
+import engine.InputCaptor;
 import engine.Moveable;
 
 import java.awt.geom.AffineTransform;
@@ -14,6 +15,8 @@ public class Camera extends GameObject implements Moveable {
         super(engine, transform);
         this.viewWidth = engine.frame.getWidth();
         this.viewHeight = engine.frame.getHeight();
+        EngineCore.inputCaptor.addKeyboardMoveBinding();
+
     }
 
     public int getViewOriginX() {
@@ -41,8 +44,19 @@ public class Camera extends GameObject implements Moveable {
 
     @Override
     public void move() {
-        this.transform.translate(5, 5);
+        int dx = 0, dy = 0;
+        if (InputCaptor.bindingActive("W")) {
+            dy = -1;
+        } else if (InputCaptor.bindingActive("S")) {
+            dy = 1;
+        }
 
+        if (InputCaptor.bindingActive("A")) {
+            dx = -1;
+        } else if (InputCaptor.bindingActive("D")) {
+            dx = 1;
+        }
+        this.transform.translate(5 * dx, 5 * dy);
     }
 
 

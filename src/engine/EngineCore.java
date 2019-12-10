@@ -3,8 +3,6 @@ package engine;
 import engine.assets.AssetCenter;
 import engine.graphics.Camera;
 import game.environment.GameWorld;
-// import game.Background;
-// import game.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +30,7 @@ public class EngineCore extends Canvas implements Runnable {
 
     public static int logicPerSecond = 60;
     public static AssetCenter assets;
-    public static InputHandler inputs;
+    public static InputCaptor inputCaptor;
     public static GameClock clock;
     public static GameAudio audio;
 
@@ -47,8 +45,9 @@ public class EngineCore extends Canvas implements Runnable {
 
         this.frame = new JFrame(name);
 
+        inputCaptor = new InputCaptor();
+
         // Starting the data collection/storage systems
-        inputs = new InputHandler(this);
         assets = new AssetCenter(path);
         elements = new PriorityQueue<>();
 
@@ -79,8 +78,8 @@ public class EngineCore extends Canvas implements Runnable {
      * and set its close op and layout. Add the current
      * {@link EngineCore} instance to the frame and pack it, making
      * the instance of the {@link EngineCore} the primary contents of
-     * said frame. Then, add our {@link InputHandler} to the frame
-     * as its {@link java.awt.event.KeyListener}. Finally, set the
+     * said frame. Then, add our {@link InputCaptor} to the frame
+     * as its {@link java.awt.event.KeyAdapter}. Finally, set the
      * frame to be focusable and resizable, and set the starting
      * position to null so that it shows up in the center of the screen.
      * Finally, display the frame by calling {@code frame.setVisible(true)}
@@ -97,14 +96,15 @@ public class EngineCore extends Canvas implements Runnable {
         // Give the frame a LayoutManager
         this.frame.setLayout(new BorderLayout());
 
+        // Add the event listeners
+        this.frame.add(inputCaptor);
+
         // Add the EngineCore to the game window
         this.frame.add(this, BorderLayout.CENTER);
 
         // Pack the elements into the frame, making it as small as possible
         this.frame.pack();
 
-        // Add the event listeners
-        this.frame.addKeyListener(inputs);
 
         // Make the frame focusable so it can capture input
         this.frame.setFocusable(true);
@@ -119,11 +119,6 @@ public class EngineCore extends Canvas implements Runnable {
 
     }
 
-    public EngineCore(int Scale, String Name, AssetCenter assetOverride) {
-        this(Scale, Name, assetOverride.getPath());
-        assets = assetOverride;
-    }
-
     public synchronized void start() {
         this.running = true;
         new Thread(this).start();
@@ -133,7 +128,6 @@ public class EngineCore extends Canvas implements Runnable {
         this.running = false;
         new Thread(this).start();
     }
-
 
     @Override
     public void run() {
@@ -181,7 +175,7 @@ public class EngineCore extends Canvas implements Runnable {
 
         }
 
-        inputs.reset();
+        inputCaptor.reset();
 
 
     }
