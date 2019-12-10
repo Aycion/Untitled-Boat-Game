@@ -5,7 +5,7 @@ import javax.sound.sampled.*;
 
 public class GameAudio {
     private Clip musicClip, cannonClip;
-    AudioInputStream musicStream, cannonStream;
+    private AudioInputStream musicStream, cannonStream;
 
     public GameAudio() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         musicStream = AudioSystem.getAudioInputStream(new File("Assets/Audio/music.wav"));
