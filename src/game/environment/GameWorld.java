@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 public class GameWorld extends GameObject {
 
     private WaterTexture water;
-    private BufferedImage worldMap;
+    private BufferedImage mapView;
 
     Dimension worldDimension;
 
@@ -25,12 +25,39 @@ public class GameWorld extends GameObject {
 
         this.initiative = -1;
         this.water = new WaterTexture();
+        this.mapView = new BufferedImage(
+                engine.gameCamera.getViewWidth(),
+                engine.gameCamera.getViewHeight(),
+                BufferedImage.TYPE_INT_RGB);
+    }
 
+    @Override
+    public void logic() {
+        super.logic();
+        Graphics2D g = this.mapView.createGraphics();
+
+        // Start x and y at tile boundaries
+        int startX = (engine.gameCamera.getViewOriginX()/water.getSize()) * water.getSize();
+        int startY = (engine.gameCamera.getViewOriginY()/water.getSize()) * water.getSize();
+
+        for (int x = startX - water.getSize();
+             x <= engine.gameCamera.getViewWidth() + water.getSize();
+             x += water.getSize()) {
+
+
+            for (int y = startY - water.getSize();
+                 y <= engine.gameCamera.getViewWidth() + water.getSize();
+                 y += water.getSize()) {
+
+                g.drawImage(water.getImage(), x, y, null);
+            }
+        }
     }
 
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-        g.drawImage(this.water.getImage(), 0, 0, null);
+
+        g.drawImage(this.mapView, 0, 0, null);
     }
 }

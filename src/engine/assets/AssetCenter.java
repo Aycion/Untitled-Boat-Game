@@ -23,7 +23,7 @@ public class AssetCenter {
 
     public AssetCenter(String path) {
 
-        this.path = path == null ? "." : path;
+        this.path = path == null ? "./Images" : path + "/Images";
 
         File file = new File(this.path);
         String[] names = file.list();

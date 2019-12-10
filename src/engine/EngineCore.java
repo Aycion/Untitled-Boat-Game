@@ -39,7 +39,6 @@ public class EngineCore extends Canvas implements Runnable {
 
     public EngineCore(int scale, String name, String path) {
         EngineCore.instance = this;
-        gameCamera = new Camera(this, new AffineTransform());
 
         // Initialize the variables
         this.scale = scale;
@@ -54,13 +53,14 @@ public class EngineCore extends Canvas implements Runnable {
 
         clock = new GameClock();
 
-
-
         // Set up the game window and interface
         this.initWindow();
 
-        // Add the sky and player
+        // Initialize the game camera
+        this.gameCamera = new Camera(this, new AffineTransform());
 
+        this.addObject(this.gameCamera);
+        // Add the game world
         try {
             this.addObject(new GameWorld(this, null));
         } catch (ResourceNotFound e) {
@@ -109,6 +109,8 @@ public class EngineCore extends Canvas implements Runnable {
         this.frame.setFocusable(true);
         this.frame.requestFocusInWindow();
 
+        this.frame.setAlwaysOnTop(false);
+
         // Set the constants for the frame
         this.frame.setResizable(false);
         this.frame.setLocationRelativeTo(null);
@@ -116,7 +118,7 @@ public class EngineCore extends Canvas implements Runnable {
 
     }
 
-    public EngineCore(int Size, int Ratio, int Scale, String Name, AssetCenter assetOverride) {
+    public EngineCore(int Scale, String Name, AssetCenter assetOverride) {
         this(Scale, Name, assetOverride.getPath());
         assets = assetOverride;
     }

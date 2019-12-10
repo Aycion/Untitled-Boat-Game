@@ -2,22 +2,53 @@ package engine.graphics;
 
 import engine.EngineCore;
 import engine.GameObject;
+import engine.Moveable;
 
 import java.awt.geom.AffineTransform;
 
-public class Camera {
+public class Camera extends GameObject implements Moveable {
 
     int viewWidth, viewHeight;
-    AffineTransform transform;
 
     public Camera(EngineCore engine, AffineTransform transform) {
-        this.viewWidth = engine.getWidth();
-        this.viewHeight = engine.getHeight();
-        this.transform = transform;
+        super(engine, transform);
+        this.viewWidth = engine.frame.getWidth();
+        this.viewHeight = engine.frame.getHeight();
     }
+
+    public int getViewOriginX() {
+        return (int) this.transform.getTranslateX();
+    }
+
+    public int getViewOriginY() {
+        return (int) this.transform.getTranslateY();
+    }
+
+
+    public int getViewWidth() {
+        return viewWidth;
+    }
+
+    public int getViewHeight() {
+        return viewHeight;
+    }
+
+    @Override
+    public void logic() {
+        super.logic();
+        this.move();
+    }
+
+    @Override
+    public void move() {
+        this.transform.translate(10, 10);
+
+    }
+
 
     /**
      * Get the coordinates of the transform relative to the screen's coordinates
+     *
      * @param t The transform on which to operate
      * @return
      */
@@ -37,8 +68,8 @@ public class Camera {
      */
     public boolean isInCameraFrame(GameObject gObj) {
 
-        double xLowBound = this.transform.getTranslateX() - (this.viewWidth/2.0);
-        double yLowBound = this.transform.getTranslateY() - (this.viewWidth/2.0);
+        double xLowBound = this.transform.getTranslateX() - (this.viewWidth / 2.0);
+        double yLowBound = this.transform.getTranslateY() - (this.viewWidth / 2.0);
         double xHighBound = xLowBound + (this.viewWidth * 1.5);
         double yHighBound = yLowBound + (this.viewHeight * 1.5);
         AffineTransform objTransform = gObj.getTransform();
@@ -51,4 +82,5 @@ public class Camera {
                 yLowBound < objY && objY < yHighBound;
 
     }
+
 }
