@@ -1,6 +1,7 @@
 package game.environment;
 
 import engine.EngineCore;
+import engine.GameClock;
 import engine.GameObject;
 import engine.ResourceNotFound;
 
@@ -57,7 +58,6 @@ public class GameWorld extends GameObject {
             for (int y = startY;
                  y <= startY + this.engine.gameCamera.getViewHeight() + (2*this.tileSize);
                  y += this.tileSize) {
-
                 g.drawImage(this.water.getImage(), x - camX, y - camY, null);
             }
         }
@@ -66,7 +66,17 @@ public class GameWorld extends GameObject {
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-
-        g.drawImage(this.mapView, -this.tileSize, -this.tileSize, null);
+        AffineTransform afX = new AffineTransform();
+        afX.setToTranslation(-this.tileSize, -this.tileSize);
+        g.drawImage(this.mapView, afX, null);
     }
+
+    public double sineDisplacement() {
+        float x = EngineCore.clock.getLastTime() / GameClock.timeUnitsPerSecond;
+        return (Math.sin(x) +
+                Math.sin((2.2*x) + 5.52) +
+                Math.sin((2.9*x) + 0.93) +
+                Math.sin((4.6*x) + 8.94));
+    }
+
 }
