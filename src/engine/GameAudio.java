@@ -17,12 +17,8 @@ public class GameAudio {
             cannonStream = AudioSystem.getAudioInputStream(new File("Assets/Audio/cannon.wav"));
             cannonClip = AudioSystem.getClip();
             cannonClip.open(cannonStream);
-        } catch (UnsupportedAudioFileException e) {
-
-        } catch (IOException e) {
-
-        } catch (LineUnavailableException e) {
-
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            System.out.println("Error in audio initialization.");
         }
     }
 
