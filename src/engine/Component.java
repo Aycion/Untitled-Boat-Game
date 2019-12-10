@@ -36,7 +36,7 @@ public abstract class Component implements Comparable<Component> {
 
     public abstract AffineTransform getGlobalTransform();
 
-    public void update() {
+    public void logic() {
 
     }
 

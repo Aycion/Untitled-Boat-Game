@@ -66,7 +66,7 @@ public class GameObject implements Comparable<GameObject>{
      */
     public void logic() {
         for (Component c : this.logicComponents) {
-            c.update();
+            c.logic();
         }
     }
 
