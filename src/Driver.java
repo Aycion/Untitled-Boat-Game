@@ -1,5 +1,4 @@
 import engine.EngineCore;
-import engine.GameAudio;
 
 public class Driver {
 
@@ -8,7 +7,6 @@ public class Driver {
                 "Untitled Boat Game", "./Assets"
         );
 
-        GameAudio audio = new GameAudio();
         engine.start();
     }
 }

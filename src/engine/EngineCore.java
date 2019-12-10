@@ -34,6 +34,7 @@ public class EngineCore extends Canvas implements Runnable {
     public static AssetCenter assets;
     public static InputHandler inputs;
     public static GameClock clock;
+    public static GameAudio audio;
 
     public static EngineCore instance;
 
@@ -52,6 +53,7 @@ public class EngineCore extends Canvas implements Runnable {
         elements = new PriorityQueue<>();
 
         clock = new GameClock();
+        audio = new GameAudio();
 
         // Set up the game window and interface
         this.initWindow();
