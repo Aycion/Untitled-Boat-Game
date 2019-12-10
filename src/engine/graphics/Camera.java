@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
 
 public class Camera extends GameObject implements Moveable {
 
-    int viewWidth, viewHeight;
+    final int viewWidth, viewHeight;
 
     public Camera(EngineCore engine, AffineTransform transform) {
         super(engine, transform);
@@ -53,10 +53,16 @@ public class Camera extends GameObject implements Moveable {
      * @return
      */
     public AffineTransform worldToScreenSpace(AffineTransform t) {
-        AffineTransform gObj = (AffineTransform) t.clone();
-        gObj.concatenate(this.transform);
 
-        return gObj;
+        double objX = t.getTranslateX();
+        double objY = t.getTranslateY();
+        double camX = this.transform.getTranslateX();
+        double camY = this.transform.getTranslateY();
+
+        AffineTransform screenSpaceXForm = new AffineTransform();
+        screenSpaceXForm.setToTranslation(objX - camX, objY - camY);
+
+        return screenSpaceXForm;
     }
 
     /**
@@ -72,6 +78,7 @@ public class Camera extends GameObject implements Moveable {
         double yLowBound = this.transform.getTranslateY() - (this.viewWidth / 2.0);
         double xHighBound = xLowBound + (this.viewWidth * 1.5);
         double yHighBound = yLowBound + (this.viewHeight * 1.5);
+
         AffineTransform objTransform = gObj.getTransform();
 
         double objX, objY;

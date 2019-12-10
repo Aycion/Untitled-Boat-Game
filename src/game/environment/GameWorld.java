@@ -25,31 +25,34 @@ public class GameWorld extends GameObject {
 
         this.initiative = -1;
         this.water = new WaterTexture();
-        this.mapView = new BufferedImage(
-                engine.gameCamera.getViewWidth(),
-                engine.gameCamera.getViewHeight(),
-                BufferedImage.TYPE_INT_RGB);
+
     }
 
     @Override
     public void logic() {
         super.logic();
+
+        this.mapView = new BufferedImage(
+                engine.gameCamera.getViewWidth() + (2 * this.water.getSize()),
+                engine.gameCamera.getViewHeight() + (2 * this.water.getSize()),
+                BufferedImage.TYPE_INT_RGB);
+
         Graphics2D g = this.mapView.createGraphics();
 
         // Start x and y at tile boundaries
-        int startX = (engine.gameCamera.getViewOriginX()/water.getSize()) * water.getSize();
-        int startY = (engine.gameCamera.getViewOriginY()/water.getSize()) * water.getSize();
+        int startX = (engine.gameCamera.getViewOriginX() / this.water.getSize()) * this.water.getSize();
+        int startY = (engine.gameCamera.getViewOriginY() / this.water.getSize()) * this.water.getSize();
 
-        for (int x = startX - water.getSize();
-             x <= engine.gameCamera.getViewWidth() + water.getSize();
-             x += water.getSize()) {
+        for (int x = startX - this.water.getSize();
+             x <= engine.gameCamera.getViewWidth() + this.water.getSize();
+             x += this.water.getSize()) {
 
 
-            for (int y = startY - water.getSize();
-                 y <= engine.gameCamera.getViewWidth() + water.getSize();
-                 y += water.getSize()) {
+            for (int y = startY - this.water.getSize();
+                 y <= engine.gameCamera.getViewHeight() + this.water.getSize();
+                 y += this.water.getSize()) {
 
-                g.drawImage(water.getImage(), x, y, null);
+                g.drawImage(this.water.getImage(), x, y, null);
             }
         }
     }
@@ -58,6 +61,6 @@ public class GameWorld extends GameObject {
     public void graphic(Graphics2D g) {
         super.graphic(g);
 
-        g.drawImage(this.mapView, 0, 0, null);
+        g.drawImage(this.mapView, -engine.gameCamera.getViewOriginX(), -engine.gameCamera.getViewOriginY(), null);
     }
 }
