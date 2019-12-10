@@ -7,15 +7,23 @@ public class GameAudio {
     private Clip musicClip, cannonClip;
     private AudioInputStream musicStream, cannonStream;
 
-    public GameAudio() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        musicStream = AudioSystem.getAudioInputStream(new File("Assets/Audio/music.wav"));
-        musicClip = AudioSystem.getClip();
-        musicClip.open(musicStream);
-        musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+    public GameAudio() {
+        try {
+            musicStream = AudioSystem.getAudioInputStream(new File("Assets/Audio/music.wav"));
+            musicClip = AudioSystem.getClip();
+            musicClip.open(musicStream);
+            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
 
-        cannonStream = AudioSystem.getAudioInputStream(new File("Assets/Audio/cannon.wav"));
-        cannonClip = AudioSystem.getClip();
-        cannonClip.open(cannonStream);
+            cannonStream = AudioSystem.getAudioInputStream(new File("Assets/Audio/cannon.wav"));
+            cannonClip = AudioSystem.getClip();
+            cannonClip.open(cannonStream);
+        } catch (UnsupportedAudioFileException e) {
+
+        } catch (IOException e) {
+
+        } catch (LineUnavailableException e) {
+
+        }
     }
 
     public void playCannonSound() {
