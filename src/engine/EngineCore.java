@@ -64,7 +64,6 @@ public class EngineCore extends Canvas implements Runnable {
         try {
             this.addObject(new GameWorld(this, null));
         } catch (ResourceNotFound e) {
-            // this.pixels = ((DataBufferInt) backGround.getRaster().getDataBuffer()).getData();
             System.err.println("Image resource not found");
         }
     }
