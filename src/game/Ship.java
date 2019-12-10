@@ -19,6 +19,12 @@ public class Ship extends GameObject implements Moveable {
     }
 
     @Override
+    public void logic() {
+        super.logic();
+        this.move();
+    }
+
+    @Override
     public void move() {
 
     }

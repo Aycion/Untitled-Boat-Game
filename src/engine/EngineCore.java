@@ -2,6 +2,7 @@ package engine;
 
 import engine.assets.AssetCenter;
 import engine.graphics.Camera;
+import game.Player;
 import game.environment.GameWorld;
 
 import javax.swing.*;
@@ -64,6 +65,11 @@ public class EngineCore extends Canvas implements Runnable {
         // Add the game world
         try {
             this.addObject(new GameWorld(this, new AffineTransform()));
+            AffineTransform pT = AffineTransform.getTranslateInstance(300, 300);
+
+            // Add the player object to the game
+            pT.scale(.9, .9);
+            this.addObject(new Player(this, pT));
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
         }
