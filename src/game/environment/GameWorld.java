@@ -46,9 +46,11 @@ public class GameWorld extends GameObject {
         int camX, camY;
         camX = this.engine.gameCamera.getViewOriginX();
         camY = this.engine.gameCamera.getViewOriginY();
+
         // Start x and y at tile boundaries
-        int startX = (camX / this.tileSize) * this.tileSize;
-        int startY = (camY / this.tileSize) * this.tileSize;
+        int startX = camX - (camX % this.tileSize);
+        int startY = camY - (camY % this.tileSize);
+
 
         for (int x = startX;
              x <= startX + this.engine.gameCamera.getViewWidth() + (2*this.tileSize);
@@ -61,6 +63,10 @@ public class GameWorld extends GameObject {
                 g.drawImage(this.water.getImage(), x - camX, y - camY, null);
             }
         }
+    }
+
+    public void drawMap(Graphics2D g) {
+
     }
 
     @Override
