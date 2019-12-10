@@ -1,22 +1,23 @@
 package engine;
 
 import engine.assets.AssetCenter;
+import engine.graphics.Camera;
+import game.environment.GameWorld;
 // import game.Background;
 // import game.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.util.PriorityQueue;
 
 public class EngineCore extends Canvas implements Runnable {
 
     // Game window dimensions
-    public int gameWidth,
-            gameHeight,
-            scale;
+    public int scale;
     public String name;         // The name to appear in the window title bar
-    public JFrame frame;        // The game window that holds the UI
+    public JFrame frame;        // The game window that holds the UI (this class)
     public Boolean running;     // Whether the game is currently running
 
     private int sleepTime = 15;  // How long to sleep in-between updates
@@ -26,17 +27,21 @@ public class EngineCore extends Canvas implements Runnable {
     public static int frameCount = 0;
     public static int logicCount = 0;
 
+    public Camera gameCamera;
+
 
     public static int logicPerSecond = 60;
     public static AssetCenter assets;
     public static InputHandler inputs;
     public static GameClock clock;
 
-    public EngineCore(int size, int ratio, int scale, String name, String path) {
+    public static EngineCore instance;
+
+    public EngineCore(int scale, String name, String path) {
+        EngineCore.instance = this;
+        gameCamera = new Camera(this, new AffineTransform());
 
         // Initialize the variables
-        this.gameHeight = size;
-        this.gameWidth = size * ratio;
         this.scale = scale;
         this.name = name;
 
@@ -44,24 +49,24 @@ public class EngineCore extends Canvas implements Runnable {
 
         // Starting the data collection/storage systems
         inputs = new InputHandler(this);
-        // assets = new AssetCenter(path);
+        assets = new AssetCenter(path);
         elements = new PriorityQueue<>();
 
         clock = new GameClock();
 
+
+
+        // Set up the game window and interface
+        this.initWindow();
+
         // Add the sky and player
-        /*
+
         try {
-            this.addObject(new Background(this));
-            this.addObject(new Player(this));
+            this.addObject(new GameWorld(this, null));
         } catch (ResourceNotFound e) {
             // this.pixels = ((DataBufferInt) backGround.getRaster().getDataBuffer()).getData();
             System.err.println("Image resource not found");
         }
-        */
-
-        // Set up the game window and interface
-        this.initWindow();
     }
 
     /**
@@ -80,10 +85,10 @@ public class EngineCore extends Canvas implements Runnable {
      * Finally, display the frame by calling {@code frame.setVisible(true)}
      */
     private void initWindow() {
-        // Setting up the canvas dimensions
-        this.setMinimumSize(new Dimension(this.gameWidth * this.scale, this.gameHeight * this.scale));
-        this.setMaximumSize(new Dimension(this.gameWidth * this.scale, this.gameHeight * this.scale));
-        this.setPreferredSize(new Dimension(this.gameWidth * this.scale, this.gameHeight * this.scale));
+
+        // Set the screen to be maximized in both dimensions on the screen
+        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.frame.setUndecorated(true);
 
         // Close operation; just exits the program when the window closes
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,14 +110,14 @@ public class EngineCore extends Canvas implements Runnable {
         this.frame.requestFocusInWindow();
 
         // Set the constants for the frame
-        this.frame.setResizable(true);
+        this.frame.setResizable(false);
         this.frame.setLocationRelativeTo(null);
         this.frame.setVisible(true);
 
     }
 
     public EngineCore(int Size, int Ratio, int Scale, String Name, AssetCenter assetOverride) {
-        this(Size, Ratio, Scale, Name, assetOverride.getPath());
+        this(Scale, Name, assetOverride.getPath());
         assets = assetOverride;
     }
 
@@ -195,8 +200,6 @@ public class EngineCore extends Canvas implements Runnable {
         }
 
         Graphics2D G = (Graphics2D) bs.getDrawGraphics();
-        G.setBackground(Color.BLUE);
-        G.clearRect(0, 0, this.gameWidth * this.scale, this.gameHeight * this.scale);
 
         //calling the graphic methods of every element
         for (GameObject j : tempElements) {
@@ -210,14 +213,6 @@ public class EngineCore extends Canvas implements Runnable {
 
     public void addObject(GameObject newObject) {
         elements.add(newObject);
-    }
-
-    public int getXBound() {
-        return this.gameWidth;
-    }
-
-    public int getYbound() {
-        return this.gameHeight;
     }
 
 }
