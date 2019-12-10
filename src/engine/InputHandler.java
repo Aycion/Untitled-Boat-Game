@@ -42,6 +42,12 @@ public class InputHandler implements KeyListener {
         if (actionMap.containsKey(e.getKeyCode())) {
             actionMap.put(e.getKeyCode(), true);
         }
+
+        /* Just for testing audio
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            EngineCore.audio.playCannonSound();
+        }
+        */
     }
 
     @Override
