@@ -12,6 +12,7 @@ public class GameWorld extends GameObject {
 
     private WaterTexture water;
     private BufferedImage mapView;
+    private int tileSize;
 
     Dimension worldDimension;
 
@@ -26,6 +27,8 @@ public class GameWorld extends GameObject {
         this.initiative = -1;
         this.water = new WaterTexture();
 
+        this.tileSize = this.water.getSize();
+
     }
 
     @Override
@@ -33,26 +36,29 @@ public class GameWorld extends GameObject {
         super.logic();
 
         this.mapView = new BufferedImage(
-                engine.gameCamera.getViewWidth() + (2 * this.water.getSize()),
-                engine.gameCamera.getViewHeight() + (2 * this.water.getSize()),
+                this.engine.gameCamera.getViewWidth() + (2 * this.tileSize),
+                this.engine.gameCamera.getViewHeight() + (2 * this.tileSize),
                 BufferedImage.TYPE_INT_RGB);
 
         Graphics2D g = this.mapView.createGraphics();
 
+        int camX, camY;
+        camX = this.engine.gameCamera.getViewOriginX();
+        camY = this.engine.gameCamera.getViewOriginY();
         // Start x and y at tile boundaries
-        int startX = (engine.gameCamera.getViewOriginX() / this.water.getSize()) * this.water.getSize();
-        int startY = (engine.gameCamera.getViewOriginY() / this.water.getSize()) * this.water.getSize();
+        int startX = (camX / this.tileSize) * this.tileSize;
+        int startY = (camY / this.tileSize) * this.tileSize;
 
-        for (int x = startX - this.water.getSize();
-             x <= engine.gameCamera.getViewWidth() + this.water.getSize();
-             x += this.water.getSize()) {
+        for (int x = startX;
+             x <= startX + this.engine.gameCamera.getViewWidth() + (2*this.tileSize);
+             x += this.tileSize) {
 
 
-            for (int y = startY - this.water.getSize();
-                 y <= engine.gameCamera.getViewHeight() + this.water.getSize();
-                 y += this.water.getSize()) {
+            for (int y = startY;
+                 y <= startY + this.engine.gameCamera.getViewHeight() + (2*this.tileSize);
+                 y += this.tileSize) {
 
-                g.drawImage(this.water.getImage(), x, y, null);
+                g.drawImage(this.water.getImage(), x - camX, y - camY, null);
             }
         }
     }
@@ -61,6 +67,6 @@ public class GameWorld extends GameObject {
     public void graphic(Graphics2D g) {
         super.graphic(g);
 
-        g.drawImage(this.mapView, -engine.gameCamera.getViewOriginX(), -engine.gameCamera.getViewOriginY(), null);
+        g.drawImage(this.mapView, -this.tileSize, -this.tileSize, null);
     }
 }
