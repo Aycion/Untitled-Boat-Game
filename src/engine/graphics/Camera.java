@@ -56,7 +56,7 @@ public class Camera extends GameObject implements Moveable {
         } else if (InputCaptor.bindingActive("D")) {
             dx = 1;
         }
-        this.transform.translate(5 * dx, 5 * dy);
+        this.transform.translate(8 * dx, 8 * dy);
     }
 
 
@@ -77,6 +77,13 @@ public class Camera extends GameObject implements Moveable {
         screenSpaceXForm.setToTranslation(objX - camX, objY - camY);
 
         return screenSpaceXForm;
+    }
+
+    public AffineTransform screenToWorldSpace(AffineTransform t) {
+        AffineTransform worldSpaceXForm = (AffineTransform) this.transform.clone();
+        worldSpaceXForm.concatenate(t);
+
+        return worldSpaceXForm;
     }
 
     /**
