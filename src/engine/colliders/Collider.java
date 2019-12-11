@@ -41,8 +41,7 @@ public abstract class Collider extends Component {
 
     @Override
     public void logic() {
-//        this.area.transform(this.parent.getDeltaTransform());
-        this.area = this.area.createTransformedArea(this.parent.getDeltaTransform());
+        this.area.transform(this.parent.getDeltaTransform());
     }
 
     @Override

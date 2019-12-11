@@ -68,7 +68,7 @@ public class EngineCore extends Canvas implements Runnable {
             this.addObject(new GameWorld(this, new AffineTransform()));
 
             // Add the player object to the game
-            this.addObject(new Player(this, AffineTransform.getTranslateInstance(300, 300)));
+            this.addObject(new Player(this, AffineTransform.getTranslateInstance(800, 800)));
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
         }

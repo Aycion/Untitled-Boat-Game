@@ -33,6 +33,5 @@ public class Player extends Ship {
             return;
         }
         this.deltaTransform.translate(0, -velocity);
-//        this.transform.concatenate(this.deltaTransform);
     }
 }
