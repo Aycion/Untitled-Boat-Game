@@ -26,23 +26,24 @@ public class Ship extends GameObject implements Moveable {
         if (this.direction != (this.direction = newDir)) {
 
             AffineTransform tempT = new AffineTransform();
-            tempT.setToTranslation(
+            tempT.setToQuadrantRotation(
+                    this.direction.quadrant,
+                    this.sprite.getWidth() / 2.0,
+                    this.sprite.getHeight() / 2.0
+            );
+
+            tempT.translate(
                     this.transform.getTranslateX(),
                     this.transform.getTranslateY()
             );
 
-            tempT.quadrantRotate(
-                    this.direction.rotation,
-                    this.sprite.getWidth() / 2.0,
-                    this.sprite.getHeight() / 2.0
-            );
 
             try {
                 tempT.invert();
             } catch (NoninvertibleTransformException e) {
                 e.printStackTrace();
             }
-            this.transform = (tempT);
+            this.transform.concatenate(tempT);
         }
     }
 

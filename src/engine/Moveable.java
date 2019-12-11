@@ -13,11 +13,11 @@ public interface Moveable {
         RIGHT(1, 0, 3);
 
         public Point2D delta;
-        public int rotation;
+        public int quadrant;
 
-        Direction(int dx, int dy, int rotation) {
+        Direction(int dx, int dy, int quadrant) {
             this.delta = new Point(dx, dy);
-            this.rotation = rotation;
+            this.quadrant = quadrant;
         }
     }
 }
