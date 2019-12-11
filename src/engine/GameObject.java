@@ -12,20 +12,18 @@ import java.util.PriorityQueue;
 
 public class GameObject implements Comparable<GameObject>{
 
-    public static int minObjectInit = 0;
-    public static int maxObjectInit = 0;
-
-
-    public static final int movementMult = 100;
+    public static final int movementMult = 10;
 
     private PriorityQueue<Component> logicComponents = new PriorityQueue<>();
 
     private PriorityQueue<Component> graphicsComponents = new PriorityQueue<>();
     protected AffineTransform transform;
+    // Represents the change in transform of this object between
+    //  the current and previous logic updates
+    protected AffineTransform deltaTransform;
 
 
     public int initiative;  // The object's priority
-    private boolean collidable;
 
     protected EngineCore engine;
 
@@ -35,8 +33,8 @@ public class GameObject implements Comparable<GameObject>{
      */
     public GameObject(EngineCore engine, AffineTransform transform) {
         this.engine = engine;
-        this.setCollidable(false);
         this.transform = transform;
+        this.deltaTransform = new AffineTransform();
 
     }
 
@@ -47,17 +45,12 @@ public class GameObject implements Comparable<GameObject>{
         this(engine, new AffineTransform());
     }
 
-    public void setTransform(AffineTransform t) {
-        if (this.transform.getTranslateX() < this.engine.getWidth())
-        this.transform = t;
-    }
-
     public AffineTransform getTransform() {
         return this.transform;
     }
 
-    protected void setCollidable(boolean c) {
-        this.collidable = c;
+    public AffineTransform getDeltaTransform() {
+        return this.deltaTransform;
     }
 
     /**
@@ -68,6 +61,8 @@ public class GameObject implements Comparable<GameObject>{
         for (Component c : this.logicComponents) {
             c.logic();
         }
+        // deltaXForm starts out as the identity matrix
+        this.deltaTransform = new AffineTransform();
     }
 
     public void graphic(Graphics2D g) {

@@ -19,7 +19,6 @@ public class Ship extends GameObject implements Moveable {
 
     public Ship(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
-        this.setCollidable(true);
 
         this.speed = 15;
 
@@ -35,11 +34,11 @@ public class Ship extends GameObject implements Moveable {
         if (this.direction != newDir) {
 
 
-            this.transform.concatenate(AffineTransform.getRotateInstance(
+            this.deltaTransform.setToRotation(
                     Math.toRadians(this.direction.getAngleDiff(newDir)),
                     this.sprite.getWidth() / 2.0,
                     0.6 * this.sprite.getHeight()
-            ));
+            );
 
             this.direction = newDir;
         }

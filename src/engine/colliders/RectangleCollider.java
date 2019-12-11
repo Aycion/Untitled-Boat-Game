@@ -11,6 +11,6 @@ public class RectangleCollider extends Collider {
     public RectangleCollider(GameObject parent, int priority, double rectangleWidth, double rectangleHeight) {
         super(parent, priority);
         rectangle = new Rectangle2D.Double(0.0, 0.0, rectangleWidth, rectangleHeight);
-        area = new Area(rectangle);
+        this.setArea(rectangle);
     }
 }

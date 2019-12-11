@@ -18,7 +18,7 @@ public class Player extends Ship {
 
     @Override
     public void move() {
-        double velocity = this.speed * 10 * EngineCore.clock.getDeltaTime();
+        double velocity = this.speed * movementMult * EngineCore.clock.getDeltaTime();
         if (InputCaptor.bindingActive("W")) {
             this.changeDirection(Direction.UP);
         } else if (InputCaptor.bindingActive("S")) {
@@ -28,8 +28,10 @@ public class Player extends Ship {
         } else if (InputCaptor.bindingActive("D")) {
             this.changeDirection(Direction.RIGHT);
         } else {
+            // Return and don't move if no keys are down
             return;
         }
-        this.transform.translate(0, -velocity);
+        this.deltaTransform.translate(0, -velocity);
+        this.transform.concatenate(this.deltaTransform);
     }
 }
