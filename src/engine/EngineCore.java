@@ -2,6 +2,7 @@ package engine;
 
 import engine.assets.AssetCenter;
 import engine.graphics.Camera;
+import game.Fortress;
 import game.Player;
 import game.environment.GameWorld;
 
@@ -68,7 +69,10 @@ public class EngineCore extends Canvas implements Runnable {
             this.addObject(new GameWorld(this, new AffineTransform()));
 
             // Add the player object to the game
-            this.addObject(new Player(this, AffineTransform.getTranslateInstance(800, 800)));
+            this.addObject(new Player(this, AffineTransform.getTranslateInstance(650, 300)));
+
+            // TESTING: Add a single "fortress" to the game
+            this.addObject(new Fortress(this, AffineTransform.getTranslateInstance(900, 400)));
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
         }

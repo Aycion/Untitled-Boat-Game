@@ -55,7 +55,7 @@ public abstract class Collider extends Component {
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-        g.setPaint(Color.BLACK);
+        g.setPaint(Color.RED);
         g.draw(area);
     }
 }
