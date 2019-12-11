@@ -1,6 +1,7 @@
 package engine.colliders;
 
 import engine.Component;
+import engine.EngineCore;
 import engine.GameObject;
 
 import java.awt.*;
@@ -10,11 +11,16 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 public abstract class Collider extends Component {
+    public static final RectangleCollider dummyRectangle = new RectangleCollider(null, 0, 0, 0);
+    public static final CircleCollider dummyCircle = new CircleCollider(null, 0, 0);
+
     protected Area area;
     protected Shape shape;
+    Color color;
 
     public Collider(GameObject parent, int priority) {
         super(parent, priority);
+        color = Color.GREEN;
     }
 
     protected void setArea(Shape s) {
@@ -40,7 +46,7 @@ public abstract class Collider extends Component {
 
     @Override
     public AffineTransform getGlobalTransform() {
-        AffineTransform t = new AffineTransform(this.parent.getTransform());
+        AffineTransform t = new AffineTransform(super.parent.getTransform());
         t.concatenate(this.getLocalTransform());
         return t;
     }
@@ -50,12 +56,29 @@ public abstract class Collider extends Component {
     public void logic() {
         this.area = new Area(this.shape);
         this.area.transform(this.getGlobalTransform());
+
+        EngineCore core = super.parent.engine;
+        this.color = Color.GREEN;
+        for (GameObject object : core.elements) {
+            RectangleCollider r = (RectangleCollider) object.getLogicComponent(dummyRectangle);
+            CircleCollider c = (CircleCollider) object.getLogicComponent(dummyCircle);
+
+            if (r != null && this.isColliding(r)) {
+                this.color = Color.RED;
+                r.color = Color.RED;
+            }
+
+            if (c != null && this.isColliding(c)) {
+                this.color = Color.RED;
+                c.color = Color.RED;
+            }
+        }
     }
 
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-        g.setPaint(Color.RED);
+        g.setPaint(color);
         g.draw(area);
     }
 }

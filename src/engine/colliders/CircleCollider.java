@@ -11,6 +11,8 @@ public class CircleCollider extends Collider {
     public CircleCollider(GameObject parent, int priority, double circleRadius) {
         super(parent, priority);
         circle = new Ellipse2D.Double(0.0, 0.0, circleRadius, circleRadius);
-        this.setArea(circle);
+        if (parent != null) {
+            this.setArea(circle);
+        }
     }
 }

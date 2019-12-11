@@ -25,7 +25,7 @@ public class GameObject implements Comparable<GameObject>{
 
     public int initiative;  // The object's priority
 
-    protected EngineCore engine;
+    public EngineCore engine;
 
     /**
      * Initialize this GameObject with a coordinate at row, col
@@ -108,7 +108,7 @@ public class GameObject implements Comparable<GameObject>{
      */
     public Component getLogicComponent(Component c) {
         for (Component comp : logicComponents) {
-            if (comp.equals(c)) {
+            if (comp.getClass().equals(c.getClass())) {
                 return comp;
             }
         }
@@ -145,7 +145,7 @@ public class GameObject implements Comparable<GameObject>{
      */
     public Component getGraphicsComponent(Component c) {
         for (Component comp : graphicsComponents) {
-            if (comp.equals(c)) {
+            if (comp.getClass().equals(c.getClass())) {
                 return comp;
             }
         }
