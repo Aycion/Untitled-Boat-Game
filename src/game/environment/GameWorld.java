@@ -63,11 +63,10 @@ public class GameWorld extends GameObject {
                 g.drawImage(this.water.getImage(), x - camX, y - camY, null);
             }
         }
+
+        g.dispose();
     }
 
-    public void drawMap(Graphics2D g) {
-
-    }
 
     @Override
     public void graphic(Graphics2D g) {

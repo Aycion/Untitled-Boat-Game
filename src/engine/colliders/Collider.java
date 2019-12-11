@@ -16,7 +16,7 @@ public abstract class Collider extends Component {
 
     protected void setArea(Shape s) {
         this.area = new Area(s);
-        this.area.transform(this.parent.getTransform());
+        this.area.transform(this.getGlobalTransform());
     }
 
     public boolean isColliding(Collider other) {
@@ -41,7 +41,8 @@ public abstract class Collider extends Component {
 
     @Override
     public void logic() {
-        this.area.transform(parent.getDeltaTransform());
+//        this.area.transform(this.parent.getDeltaTransform());
+        this.area = this.area.createTransformedArea(this.parent.getDeltaTransform());
     }
 
     @Override

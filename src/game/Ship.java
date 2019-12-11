@@ -25,7 +25,12 @@ public class Ship extends GameObject implements Moveable {
         this.sprite = new ShipSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        RectangleCollider shipCollider = new RectangleCollider(this, 10, (double) sprite.getWidth(), (double) sprite.getHeight());
+        RectangleCollider shipCollider = new RectangleCollider(
+                this,
+                10,
+                sprite.getWidth(),
+                sprite.getHeight()
+        );
         this.addLogicComponent(shipCollider);
         this.addGraphicsComponent(shipCollider);
     }
@@ -33,8 +38,8 @@ public class Ship extends GameObject implements Moveable {
     protected void changeDirection(Direction newDir) {
         if (this.direction != newDir) {
 
-
-            this.deltaTransform.setToRotation(
+            // Add a rotation to the deltaTransform object
+            this.deltaTransform.rotate(
                     Math.toRadians(this.direction.getAngleDiff(newDir)),
                     this.sprite.getWidth() / 2.0,
                     0.6 * this.sprite.getHeight()

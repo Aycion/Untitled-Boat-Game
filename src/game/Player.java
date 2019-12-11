@@ -18,6 +18,7 @@ public class Player extends Ship {
 
     @Override
     public void move() {
+        super.move();
         double velocity = this.speed * movementMult * EngineCore.clock.getDeltaTime();
         if (InputCaptor.bindingActive("W")) {
             this.changeDirection(Direction.UP);
@@ -32,6 +33,6 @@ public class Player extends Ship {
             return;
         }
         this.deltaTransform.translate(0, -velocity);
-        this.transform.concatenate(this.deltaTransform);
+//        this.transform.concatenate(this.deltaTransform);
     }
 }
