@@ -6,15 +6,19 @@ import engine.GameObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.Point2D;
 
 public abstract class Collider extends Component {
     protected Area area;
+    protected Shape shape;
 
     public Collider(GameObject parent, int priority) {
         super(parent, priority);
     }
 
     protected void setArea(Shape s) {
+        this.shape = s;
         this.area = new Area(s);
         this.area.transform(this.getGlobalTransform());
     }
@@ -30,18 +34,22 @@ public abstract class Collider extends Component {
     }
 
     @Override
-    public AffineTransform getGlobalTransform() {
-        return parent.getTransform();
+    public AffineTransform getLocalTransform() {
+        return this.localTransform;
     }
 
     @Override
-    public AffineTransform getLocalTransform() {
-        return parent.getTransform();
+    public AffineTransform getGlobalTransform() {
+        AffineTransform t = new AffineTransform(this.parent.getDeltaTransform());
+        t.concatenate(this.getLocalTransform());
+        return t;
     }
+
 
     @Override
     public void logic() {
-        this.area.transform(this.parent.getDeltaTransform());
+        this.area = new Area(this.shape);
+        this.area.transform(this.getGlobalTransform());
     }
 
     @Override

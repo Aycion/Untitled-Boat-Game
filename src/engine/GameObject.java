@@ -61,9 +61,11 @@ public class GameObject implements Comparable<GameObject>{
         // Transform the object by the delta from
         //  the previous frame
         this.transform.concatenate(this.deltaTransform);
+
         for (Component c : this.logicComponents) {
             c.logic();
         }
+
         // deltaXForm resets to the identity matrix
         this.deltaTransform.setToIdentity();
     }
