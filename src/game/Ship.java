@@ -1,6 +1,10 @@
 package game;
 
-import engine.*;
+import engine.EngineCore;
+import engine.GameObject;
+import engine.Moveable;
+import engine.ResourceNotFound;
+import engine.colliders.RectangleCollider;
 import engine.graphics.ShipSprite;
 
 import java.awt.geom.AffineTransform;
@@ -21,6 +25,10 @@ public class Ship extends GameObject implements Moveable {
 
         this.sprite = new ShipSprite(this);
         this.addGraphicsComponent(this.sprite);
+
+        RectangleCollider shipCollider = new RectangleCollider(this, 5000, (double) sprite.getWidth(), (double) sprite.getHeight());
+        this.addLogicComponent(shipCollider);
+        this.addGraphicsComponent(shipCollider);
     }
 
     protected void changeDirection(Direction newDir) {
