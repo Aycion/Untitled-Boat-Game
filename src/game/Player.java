@@ -2,31 +2,36 @@ package game;
 
 import engine.EngineCore;
 import engine.InputCaptor;
+import engine.ResourceNotFound;
 
 import java.awt.geom.AffineTransform;
 
 public class Player extends Ship {
 
-    public Player(EngineCore engine, AffineTransform transform) {
+    public Player(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
         EngineCore.inputCaptor.addKeyboardMoveBinding();
+        this.direction = Direction.UP;
+
     }
 
 
     @Override
     public void move() {
-        int dx = 0, dy = 0;
+
         if (InputCaptor.bindingActive("W")) {
-            dy = -1;
+            this.changeDirection(Direction.UP);
         } else if (InputCaptor.bindingActive("S")) {
-            dy = 1;
+            this.changeDirection(Direction.DOWN);
         }
 
         if (InputCaptor.bindingActive("A")) {
-            dx = -1;
+            this.changeDirection(Direction.LEFT);
         } else if (InputCaptor.bindingActive("D")) {
-            dx = 1;
+            this.changeDirection(Direction.RIGHT);
         }
-        this.transform.translate(this.speed * dx, this.speed * dy);
+//        this.transform.translate(
+//                this.speed * this.direction.delta.getX(),
+//                this.speed * this.direction.delta.getY());
     }
 }

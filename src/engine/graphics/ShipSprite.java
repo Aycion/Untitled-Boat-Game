@@ -11,20 +11,14 @@ import java.awt.image.BufferedImage;
 
 public class ShipSprite extends Component implements Animatable {
 
-    private static BufferedImage spriteImg;
+    private BufferedImage spriteImg;
 
-    static {
-        try {
-            spriteImg = (BufferedImage)
-                        EngineCore.assets.getImage("ship1.png", 0);
-        } catch (ResourceNotFound resourceNotFound) {
-            resourceNotFound.printStackTrace();
-        }
-    }
-
-    public ShipSprite(GameObject object) {
+    public ShipSprite(GameObject object) throws ResourceNotFound {
         super(object);
-        this.localTransform = new AffineTransform(object.getTransform());
+        spriteImg = (BufferedImage)
+                EngineCore.assets.getImage("ship1.png", 0);
+        this.localTransform = new AffineTransform();
+        this.localTransform.setToIdentity();
 
     }
 
@@ -43,6 +37,14 @@ public class ShipSprite extends Component implements Animatable {
     @Override
     public BufferedImage getAnimationFrame() {
         return spriteImg;
+    }
+
+    public int getWidth() {
+        return this.spriteImg.getWidth();
+    }
+
+    public int getHeight() {
+        return this.spriteImg.getHeight();
     }
 
     @Override
