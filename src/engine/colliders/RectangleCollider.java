@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
 public class RectangleCollider extends Collider {
     protected Rectangle2D.Double rectangle;
 
-    public RectangleCollider(GameObject parent, int priority, double rectangleHeight, double rectangleWidth) {
+    public RectangleCollider(GameObject parent, int priority, double rectangleWidth, double rectangleHeight) {
         super(parent, priority);
         rectangle = new Rectangle2D.Double(0.0, 0.0, rectangleWidth, rectangleHeight);
         area = new Area(rectangle);

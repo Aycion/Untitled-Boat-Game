@@ -10,10 +10,6 @@ import java.awt.geom.AffineTransform;
  */
 public abstract class Component implements Comparable<Component> {
 
-
-    public static int maxComponentPriority = 0;
-    public static int minComponentPriority = 0;
-
     protected GameObject parent;
 
     public boolean active;

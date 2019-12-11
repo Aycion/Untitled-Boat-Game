@@ -23,12 +23,12 @@ public class Player extends Ship {
             this.changeDirection(Direction.UP);
         } else if (InputCaptor.bindingActive("S")) {
             this.changeDirection(Direction.DOWN);
-        }
-
-        if (InputCaptor.bindingActive("A")) {
+        } else if (InputCaptor.bindingActive("A")) {
             this.changeDirection(Direction.LEFT);
         } else if (InputCaptor.bindingActive("D")) {
             this.changeDirection(Direction.RIGHT);
+        } else {
+            return;
         }
         this.transform.translate(0, -velocity);
     }

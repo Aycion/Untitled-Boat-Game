@@ -26,7 +26,7 @@ public class Ship extends GameObject implements Moveable {
         this.sprite = new ShipSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        RectangleCollider shipCollider = new RectangleCollider(this, 5000, (double) sprite.getWidth(), (double) sprite.getHeight());
+        RectangleCollider shipCollider = new RectangleCollider(this, 10, (double) sprite.getWidth(), (double) sprite.getHeight());
         this.addLogicComponent(shipCollider);
         this.addGraphicsComponent(shipCollider);
     }

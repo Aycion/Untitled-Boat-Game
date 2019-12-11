@@ -36,12 +36,13 @@ public abstract class Collider extends Component {
 
     @Override
     public void logic() {
-        area.transform(parent.getTransform());
+        area.transform(new AffineTransform());
     }
 
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
+        g.setPaint(Color.BLACK);
         g.draw(area);
     }
 }

@@ -15,6 +15,7 @@ public class ShipSprite extends Component implements Animatable {
 
     public ShipSprite(GameObject object) throws ResourceNotFound {
         super(object);
+        this.priority = 1;
         spriteImg = (BufferedImage)
                 EngineCore.assets.getImage("ship1.png", 0);
         this.localTransform = new AffineTransform();
