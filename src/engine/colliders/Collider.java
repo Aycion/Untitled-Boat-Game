@@ -7,8 +7,8 @@ import engine.GameObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.NoninvertibleTransformException;
-import java.awt.geom.Point2D;
+
+import static engine.EngineCore.audio;
 
 public abstract class Collider extends Component {
     public static final RectangleCollider dummyRectangle = new RectangleCollider(null, 0, 0, 0);
@@ -30,13 +30,12 @@ public abstract class Collider extends Component {
     }
 
     public boolean isColliding(Collider other) {
-        try {
-            Area intersection = (Area) this.clone();
-            intersection.intersect(other.area);
-            return !intersection.isEmpty();
-        } catch (CloneNotSupportedException e) {
-            return false;
-        }
+        boolean retVal = false;
+        this.setArea(shape);
+        this.area.intersect(other.area);
+        retVal = this.area.isEmpty();
+        this.setArea(shape);
+        return retVal;
     }
 
     @Override
@@ -64,11 +63,13 @@ public abstract class Collider extends Component {
             CircleCollider c = (CircleCollider) object.getLogicComponent(dummyCircle);
 
             if (r != null && this.isColliding(r)) {
+                // audio.playCannonSound();
                 this.color = Color.RED;
                 r.color = Color.RED;
             }
 
             if (c != null && this.isColliding(c)) {
+                // audio.playCannonSound();
                 this.color = Color.RED;
                 c.color = Color.RED;
             }
