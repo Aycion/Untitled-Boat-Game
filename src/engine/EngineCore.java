@@ -29,6 +29,7 @@ public class EngineCore extends Canvas implements Runnable {
     public Camera gameCamera;
 
 
+
     public static int logicPerSecond = 60;
     public static AssetCenter assets;
     public static InputCaptor inputCaptor;

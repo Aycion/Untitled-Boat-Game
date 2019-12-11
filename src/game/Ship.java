@@ -1,22 +1,24 @@
 package game;
 
-import engine.EngineCore;
-import engine.GameObject;
-import engine.Moveable;
-import engine.ResourceNotFound;
+import engine.*;
 import engine.graphics.ShipSprite;
 
 import java.awt.geom.AffineTransform;
 
 public class Ship extends GameObject implements Moveable {
-    float speed;
+
+    // Velocity vars
+    double speed;
     Direction direction;
+
     private ShipSprite sprite;
 
     public Ship(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
         this.setCollidable(true);
-        this.speed = 5;
+
+        this.speed = 15;
+
         this.sprite = new ShipSprite(this);
         this.addGraphicsComponent(this.sprite);
     }
