@@ -38,7 +38,9 @@ public class Ship extends GameObject implements Moveable {
     protected void changeDirection(Direction newDir) {
         if (this.direction != newDir) {
 
-            // Add a rotation to the deltaTransform object
+            // Calculate the angle of rotation based on the
+            //  previous direction and the new one, then add
+            //  the rotation to the object's deltaTransform
             this.deltaTransform.rotate(
                     Math.toRadians(this.direction.getAngleDiff(newDir)),
                     this.sprite.getWidth() / 2.0,

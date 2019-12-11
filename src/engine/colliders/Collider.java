@@ -40,7 +40,7 @@ public abstract class Collider extends Component {
 
     @Override
     public AffineTransform getGlobalTransform() {
-        AffineTransform t = new AffineTransform(this.parent.getDeltaTransform());
+        AffineTransform t = new AffineTransform(this.parent.getTransform());
         t.concatenate(this.getLocalTransform());
         return t;
     }
