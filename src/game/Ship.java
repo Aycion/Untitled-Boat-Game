@@ -7,7 +7,6 @@ import engine.ResourceNotFound;
 import engine.graphics.ShipSprite;
 
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 
 public class Ship extends GameObject implements Moveable {
     float speed;
@@ -23,27 +22,16 @@ public class Ship extends GameObject implements Moveable {
     }
 
     protected void changeDirection(Direction newDir) {
-        if (this.direction != (this.direction = newDir)) {
+        if (this.direction != newDir) {
 
-            AffineTransform tempT = new AffineTransform();
-            tempT.setToQuadrantRotation(
-                    this.direction.quadrant,
+
+            this.transform.concatenate(AffineTransform.getRotateInstance(
+                    Math.toRadians(this.direction.getAngleDiff(newDir)),
                     this.sprite.getWidth() / 2.0,
-                    this.sprite.getHeight() / 2.0
-            );
+                    0.6 * this.sprite.getHeight()
+            ));
 
-            tempT.translate(
-                    this.transform.getTranslateX(),
-                    this.transform.getTranslateY()
-            );
-
-
-            try {
-                tempT.invert();
-            } catch (NoninvertibleTransformException e) {
-                e.printStackTrace();
-            }
-            this.transform.concatenate(tempT);
+            this.direction = newDir;
         }
     }
 

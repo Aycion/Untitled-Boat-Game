@@ -30,8 +30,6 @@ public class Player extends Ship {
         } else if (InputCaptor.bindingActive("D")) {
             this.changeDirection(Direction.RIGHT);
         }
-//        this.transform.translate(
-//                this.speed * this.direction.delta.getX(),
-//                this.speed * this.direction.delta.getY());
+        this.transform.translate(0, -this.speed);
     }
 }
