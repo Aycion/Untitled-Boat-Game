@@ -76,7 +76,7 @@ public class EngineCore extends Canvas implements Runnable {
             this.addObject(new Fortress(this, AffineTransform.getTranslateInstance(900, 400)));
 
             // TESTING: Add a single piece of driftwood to the game
-            // this.addObject(new Driftwood(this, AffineTransform.getTranslateInstance(200, 500)));
+             this.addObject(new Driftwood(this, AffineTransform.getTranslateInstance(200, 500)));
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
         }

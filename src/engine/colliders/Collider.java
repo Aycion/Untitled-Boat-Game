@@ -38,7 +38,7 @@ public abstract class Collider extends Component {
         */
         Area temp = (Area) this.area.clone();
         temp.intersect(other.area);
-        return temp.isEmpty();
+        return !temp.isEmpty();
     }
 
     @Override
@@ -63,19 +63,21 @@ public abstract class Collider extends Component {
         EngineCore core = this.parent.engine;
         this.color = Color.GREEN;
         for (GameObject object : core.elements) {
-            RectangleCollider r = (RectangleCollider) object.getLogicComponent(dummyRectangle);
-            CircleCollider c = (CircleCollider) object.getLogicComponent(dummyCircle);
+            if (object != this.parent) {
+                RectangleCollider r = (RectangleCollider) object.getLogicComponent(dummyRectangle);
+                CircleCollider c = (CircleCollider) object.getLogicComponent(dummyCircle);
 
-            if (r != null && this.isColliding(r)) {
-                // audio.playCannonSound();
-                this.color = Color.RED;
-                r.color = Color.RED;
-            }
+                if (r != null && this.isColliding(r)) {
+                    // audio.playCannonSound();
+                    this.color = Color.RED;
+                    r.color = Color.RED;
+                }
 
-            if (c != null && this.isColliding(c)) {
-                // audio.playCannonSound();
-                this.color = Color.RED;
-                c.color = Color.RED;
+                if (c != null && this.isColliding(c)) {
+                    // audio.playCannonSound();
+                    this.color = Color.RED;
+                    c.color = Color.RED;
+                }
             }
         }
     }

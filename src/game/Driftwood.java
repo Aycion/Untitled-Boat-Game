@@ -18,7 +18,12 @@ public class Driftwood extends GameObject {
         this.sprite = new DriftwoodSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        RectangleCollider driftwoodCollider = new RectangleCollider(this, 10, sprite.getWidth(), sprite.getHeight());
+        RectangleCollider driftwoodCollider = new RectangleCollider(
+                this,
+                10,
+                sprite.getWidth(),
+                sprite.getHeight()
+        );
         this.addLogicComponent(driftwoodCollider);
         this.addGraphicsComponent(driftwoodCollider);
     }
