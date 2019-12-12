@@ -1,6 +1,7 @@
 package engine;
 
 import java.io.*;
+import java.util.HashMap;
 import javax.sound.sampled.*;
 
 public class GameAudio {
@@ -9,11 +10,13 @@ public class GameAudio {
     public static final String CRASH_SOUND_FILENAME = "Assets/Audio/crash.wav";
 
     private long prev_ts, cur_ts;
+    private HashMap<String, long[]> intervals;
 
     public GameAudio() {
         playGameMusic();
         prev_ts = 0;
         cur_ts = 0;
+        intervals = new HashMap<>();
     }
 
     public void playGameMusic() {
@@ -28,9 +31,16 @@ public class GameAudio {
     }
 
     public void playSoundClip(String filename, int delayInMilliseconds) {
-        cur_ts = System.currentTimeMillis();
+        long curTime = System.currentTimeMillis();
 
-        if (cur_ts - prev_ts >= delayInMilliseconds) {
+        if (!intervals.containsKey(filename)) {
+            intervals.put(filename, new long[]{0, curTime});
+        }
+
+        long[] curInterval = intervals.get(filename);
+        curInterval[1] = curTime;
+
+        if (curInterval[1] - curInterval[0] >= delayInMilliseconds) {
             try {
                 AudioInputStream cannonStream = AudioSystem.getAudioInputStream(new File(filename));
                 Clip soundClip = AudioSystem.getClip();
@@ -39,7 +49,7 @@ public class GameAudio {
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.out.println("Encountered an error when playing a sound.");
             }
-            prev_ts = cur_ts;
+            curInterval[0] = curInterval[1];
         }
     }
 }
