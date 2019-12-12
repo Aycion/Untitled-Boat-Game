@@ -1,6 +1,7 @@
 package game;
 
 import engine.EngineCore;
+import engine.GameObject;
 import engine.InputCaptor;
 import engine.ResourceNotFound;
 
@@ -18,20 +19,18 @@ public class Player extends Ship {
 
     @Override
     public void move() {
-        super.move();
-        double velocity = this.speed * movementMult * EngineCore.clock.getDeltaTime();
         if (InputCaptor.bindingActive("W")) {
-            this.changeDirection(Direction.UP);
+            this.accelerate();
         } else if (InputCaptor.bindingActive("S")) {
-            this.changeDirection(Direction.DOWN);
-        } else if (InputCaptor.bindingActive("A")) {
-            this.changeDirection(Direction.LEFT);
-        } else if (InputCaptor.bindingActive("D")) {
-            this.changeDirection(Direction.RIGHT);
-        } else {
-            // Return and don't move if no keys are down
-            return;
+            this.decelerate();
         }
-        this.deltaTransform.translate(0, -velocity);
+
+        if (InputCaptor.bindingActive("A")) {
+            this.turnLeft();
+        } else if (InputCaptor.bindingActive("D")) {
+            this.turnRight();
+        }
+
+        super.move();
     }
 }
