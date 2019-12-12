@@ -1,8 +1,6 @@
 package engine.colliders;
 
 import engine.GameObject;
-
-import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 public class CircleCollider extends Collider {

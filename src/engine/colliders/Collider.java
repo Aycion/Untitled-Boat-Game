@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
-import static engine.EngineCore.audio;
-
 public abstract class Collider extends Component {
     public static final RectangleCollider dummyRectangle = new RectangleCollider(null, 0, 0, 0);
     public static final CircleCollider dummyCircle = new CircleCollider(null, 0, 0);
@@ -30,12 +28,17 @@ public abstract class Collider extends Component {
     }
 
     public boolean isColliding(Collider other) {
+        /*
         boolean retVal = false;
         this.setArea(shape);
         this.area.intersect(other.area);
         retVal = this.area.isEmpty();
         this.setArea(shape);
         return retVal;
+        */
+        Area temp = (Area) this.area.clone();
+        temp.intersect(other.area);
+        return temp.isEmpty();
     }
 
     @Override
