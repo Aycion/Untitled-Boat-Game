@@ -4,6 +4,7 @@ import engine.EngineCore;
 import engine.GameClock;
 import engine.GameObject;
 import engine.ResourceNotFound;
+import jdk.jfr.Experimental;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -71,10 +72,10 @@ public class GameWorld extends GameObject {
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-        AffineTransform afX = new AffineTransform();
-        afX.setToTranslation(-this.tileSize, -this.tileSize);
+        AffineTransform afX = AffineTransform.getTranslateInstance(-this.tileSize, -this.tileSize);
         g.drawImage(this.mapView, afX, null);
     }
+
 
     public double sineDisplacement() {
         float x = EngineCore.clock.getLastTime() / GameClock.timeUnitsPerSecond;

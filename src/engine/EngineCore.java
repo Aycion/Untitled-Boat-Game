@@ -218,6 +218,7 @@ public class EngineCore extends Canvas implements Runnable {
 
         Graphics2D G = (Graphics2D) bs.getDrawGraphics();
 
+        G.setTransform(this.gameCamera.getTransform());
         //calling the graphic methods of every element
         for (GameObject j : tempElements) {
             j.graphic(G);

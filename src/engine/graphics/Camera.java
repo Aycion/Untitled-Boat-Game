@@ -42,7 +42,7 @@ public class Camera extends GameObject implements Moveable {
 
     @Override
     public void move() {
-
+        this.deltaTransform.rotate(.05, this.getViewWidth()/2f, this.getViewHeight()/2f);
     }
 
 
