@@ -40,8 +40,15 @@ public class EngineCore extends Canvas implements Runnable {
 
     public static EngineCore instance;
 
+    /**
+     * Main constructor for creating an instance of the game
+     * @param scale
+     * @param name
+     * @param path
+     */
     public EngineCore(int scale, String name, String path) {
         EngineCore.instance = this;
+
 
         // Initialize the variables
         this.scale = scale;

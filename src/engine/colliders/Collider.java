@@ -28,14 +28,6 @@ public abstract class Collider extends Component {
     }
 
     public boolean isColliding(Collider other) {
-        /*
-        boolean retVal = false;
-        this.setArea(shape);
-        this.area.intersect(other.area);
-        retVal = this.area.isEmpty();
-        this.setArea(shape);
-        return retVal;
-        */
         Area temp = (Area) this.area.clone();
         temp.intersect(other.area);
         return !temp.isEmpty();

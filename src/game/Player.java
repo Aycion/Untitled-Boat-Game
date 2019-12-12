@@ -1,7 +1,6 @@
 package game;
 
 import engine.EngineCore;
-import engine.GameObject;
 import engine.InputCaptor;
 import engine.ResourceNotFound;
 
@@ -12,7 +11,6 @@ public class Player extends Ship {
     public Player(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
         EngineCore.inputCaptor.addKeyboardMoveBinding();
-        this.direction = Direction.UP;
 
     }
 
