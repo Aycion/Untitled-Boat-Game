@@ -48,7 +48,7 @@ public abstract class Collider extends Component {
 
     @Override
     public AffineTransform getGlobalTransform() {
-        AffineTransform t = new AffineTransform(super.parent.getTransform());
+        AffineTransform t = new AffineTransform(this.parent.getTransform());
         t.concatenate(this.getLocalTransform());
         return t;
     }
@@ -56,10 +56,11 @@ public abstract class Collider extends Component {
 
     @Override
     public void logic() {
+        // Update the area with the parent's current transform
         this.area = new Area(this.shape);
         this.area.transform(this.getGlobalTransform());
 
-        EngineCore core = super.parent.engine;
+        EngineCore core = this.parent.engine;
         this.color = Color.GREEN;
         for (GameObject object : core.elements) {
             RectangleCollider r = (RectangleCollider) object.getLogicComponent(dummyRectangle);
@@ -82,7 +83,7 @@ public abstract class Collider extends Component {
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-        g.setPaint(color);
-        g.draw(area);
+        g.setPaint(this.color);
+        g.draw(this.area);
     }
 }
