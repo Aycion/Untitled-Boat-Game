@@ -2,11 +2,13 @@ package engine.colliders;
 
 import engine.Component;
 import engine.EngineCore;
+import engine.GameAudio;
 import engine.GameObject;
-
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+
+import static engine.EngineCore.audio;
 
 public abstract class Collider extends Component {
     public static final RectangleCollider dummyRectangle = new RectangleCollider(null, 0, 0, 0);
@@ -60,13 +62,13 @@ public abstract class Collider extends Component {
                 CircleCollider c = (CircleCollider) object.getLogicComponent(dummyCircle);
 
                 if (r != null && this.isColliding(r)) {
-                    // audio.playCannonSound();
+                    audio.playSoundClip(GameAudio.CRASH_SOUND_FILENAME, 800);
                     this.color = Color.RED;
                     r.color = Color.RED;
                 }
 
                 if (c != null && this.isColliding(c)) {
-                    // audio.playCannonSound();
+                    audio.playSoundClip(GameAudio.CRASH_SOUND_FILENAME, 800);
                     this.color = Color.RED;
                     c.color = Color.RED;
                 }
