@@ -1,8 +1,6 @@
 package engine.graphics;
 
-import engine.EngineCore;
-import engine.GameObject;
-import engine.Moveable;
+import engine.*;
 
 import java.awt.geom.AffineTransform;
 
@@ -11,6 +9,9 @@ public class Camera extends GameObject implements Moveable {
     final int viewWidth, viewHeight;
     final int MIN_TRANSLATE_X, MIN_TRANSLATE_Y,
             MAX_TRANSLATE_X, MAX_TRANSLATE_Y;
+
+    final double scaleMin, scaleMax, baseScaleRate, baseRotationRate;
+    double scale, scaleRate, rotationRate;
 
 
     public Camera(EngineCore engine, AffineTransform transform) {
@@ -23,6 +24,13 @@ public class Camera extends GameObject implements Moveable {
         this.MIN_TRANSLATE_Y = EngineCore.gameWorld.L_BOUND_Y;
         this.MAX_TRANSLATE_X = EngineCore.gameWorld.U_BOUND_X - this.viewWidth;
         this.MAX_TRANSLATE_Y = EngineCore.gameWorld.U_BOUND_Y - this.viewHeight;
+
+        this.scale = 1;
+        this.scaleMin = 0.5;
+        this.scaleMax = 1.2;
+        this.baseScaleRate = 0.1;
+
+        this.baseRotationRate = 1;
 
     }
 
@@ -43,9 +51,51 @@ public class Camera extends GameObject implements Moveable {
         return this.viewHeight;
     }
 
+    private void zoomIn() {
+        this.scale = Math.max(this.scaleMin, this.scale - this.scaleRate);
+    }
+
+    private void zoomOut() {
+        this.scale = Math.min(this.scaleMax, this.scale + this.scaleRate);
+    }
+
+    private void rotLeft() {
+        this.transform.rotate(this.rotationRate);
+    }
+
+    private void rotRight() {
+        this.transform.rotate(-this.rotationRate);
+    }
+
+    private void readInput() {
+        if (InputCaptor.bindingActive("UP")) {
+            this.zoomIn();
+        } else if (InputCaptor.bindingActive("DOWN")) {
+            this.zoomOut();
+        }
+
+        if (InputCaptor.bindingActive("LEFT")) {
+            this.rotLeft();
+        } else if (InputCaptor.bindingActive("RIGHT")) {
+            this.rotRight();
+        }
+    }
+
+
     @Override
     public void logic() {
         super.logic();
+
+        // Update the movement constants
+        this.scaleRate = this.baseScaleRate
+                * EngineCore.clock.getDeltaTime()
+                * GameObject.movementMult;
+
+        this.rotationRate = this.baseRotationRate
+                * EngineCore.clock.getDeltaTime()
+                * GameObject.movementMult;
+
+        this.readInput();
         this.move();
 
     }
@@ -53,8 +103,13 @@ public class Camera extends GameObject implements Moveable {
     @Override
     public void move() {
         double tlX, tlY;
+
+        /*
+        Start of block for following player
+         */
         AffineTransform anchorPoint = new AffineTransform(EngineCore.player.getTransform());
         anchorPoint.translate(EngineCore.player.getRotAnchorX(), EngineCore.player.getRotAnchorY());
+
         tlX = anchorPoint.getTranslateX() - (0.5 * this.viewWidth);
         tlY = anchorPoint.getTranslateY() - (0.5 * this.viewHeight);
 
@@ -69,6 +124,12 @@ public class Camera extends GameObject implements Moveable {
         );
 
         this.transform.setToTranslation(tlX, tlY);
+        AffineTransform scaleT = AffineTransform.getTranslateInstance(
+                (this.getViewportWidth() / 2.0) - (this.scale * (this.getViewportWidth()) / 2.0),
+                (this.getViewportHeight() / 2.0) - (this.scale * (this.getViewportHeight()) / 2.0)
+        );
+        scaleT.scale(this.scale, this.scale);
+        this.transform.concatenate(scaleT);
 
     }
 

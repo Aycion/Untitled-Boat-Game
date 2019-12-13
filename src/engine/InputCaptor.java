@@ -42,18 +42,21 @@ public class InputCaptor extends JComponent {
         this.actionMap.put(releaseEvent, new ReleaseAction(keyName));
     }
 
-    public void addKeyboardMoveBinding() {
-        /*
-        Mappings for key pressed events
-         */
+    public void addKeyboardDefaultBindings() {
+        // Default move keys
         addActionKey("W");
         addActionKey("S");
         addActionKey("A");
         addActionKey("D");
-        addActionKey("I");
-        addActionKey("O");
-        addActionKey("F");
-        addActionKey("SPACE");
+
+        // Default camera control keys
+        addActionKey("UP");
+        addActionKey("DOWN");
+        addActionKey("LEFT");
+        addActionKey("RIGHT");
+
+        addActionKey("F");      // Change ship
+        addActionKey("SPACE");  // Cannons
 
     }
 
