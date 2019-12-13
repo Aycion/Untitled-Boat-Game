@@ -6,6 +6,7 @@ import game.Driftwood;
 import game.Fortress;
 import game.Player;
 import game.environment.GameWorld;
+import game.environment.WorldMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +51,6 @@ public class EngineCore extends Canvas implements Runnable {
     public EngineCore(int scale, String name, String path) {
         EngineCore.instance = this;
 
-
         // Initialize the variables
         this.scale = scale;
         this.name = name;
@@ -69,12 +69,16 @@ public class EngineCore extends Canvas implements Runnable {
         // Set up the game window and interface
         this.initWindow();
 
+        // Initialize and add the game world
+        gameWorld = new GameWorld(this, new AffineTransform());
+        this.addObject(gameWorld);
 
-        // Add the game world
+        // Initialize and add the game camera
+        gameCamera = new Camera(this, new AffineTransform());
+        this.addObject(gameCamera);
+
         try {
-            gameWorld = new GameWorld(this, new AffineTransform());
-            this.addObject(gameWorld);
-
+            this.addObject(new WorldMap(this, new AffineTransform()));
             // Add the player object to the game
             player = new Player(this, AffineTransform.getTranslateInstance(650, 300));
             this.addObject(player);
@@ -88,9 +92,6 @@ public class EngineCore extends Canvas implements Runnable {
             System.err.println("Image resource not found");
         }
 
-        // Initialize and add the game camera
-        gameCamera = new Camera(this, new AffineTransform());
-        this.addObject(gameCamera);
     }
 
     /**

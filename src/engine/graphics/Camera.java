@@ -12,15 +12,17 @@ public class Camera extends GameObject implements Moveable {
     final int MIN_TRANSLATE_X, MIN_TRANSLATE_Y,
             MAX_TRANSLATE_X, MAX_TRANSLATE_Y;
 
+
     public Camera(EngineCore engine, AffineTransform transform) {
         super(engine, transform);
+
         this.viewWidth = engine.frame.getWidth();
         this.viewHeight = engine.frame.getHeight();
 
-        MIN_TRANSLATE_X = EngineCore.gameWorld.L_BOUND_X;
-        MIN_TRANSLATE_Y = EngineCore.gameWorld.L_BOUND_Y;
-        MAX_TRANSLATE_X = EngineCore.gameWorld.U_BOUND_X - this.viewWidth;
-        MAX_TRANSLATE_Y = EngineCore.gameWorld.U_BOUND_Y - this.viewHeight;
+        this.MIN_TRANSLATE_X = EngineCore.gameWorld.L_BOUND_X;
+        this.MIN_TRANSLATE_Y = EngineCore.gameWorld.L_BOUND_Y;
+        this.MAX_TRANSLATE_X = EngineCore.gameWorld.U_BOUND_X - this.viewWidth;
+        this.MAX_TRANSLATE_Y = EngineCore.gameWorld.U_BOUND_Y - this.viewHeight;
 
     }
 
@@ -33,11 +35,11 @@ public class Camera extends GameObject implements Moveable {
     }
 
 
-    public int getViewWidth() {
+    public int getViewportWidth() {
         return this.viewWidth;
     }
 
-    public int getViewHeight() {
+    public int getViewportHeight() {
         return this.viewHeight;
     }
 
