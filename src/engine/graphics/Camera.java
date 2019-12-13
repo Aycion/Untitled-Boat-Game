@@ -47,7 +47,7 @@ public class Camera extends GameObject implements Moveable {
 
     @Override
     public void move() {
-        this.deltaTransform.translate(5, 5);
+//        this.deltaTransform.translate(5, 5);
     }
 
 
