@@ -83,6 +83,14 @@ public class Ship extends GameObject implements Moveable {
         lpTimer = 0;
     }
 
+    public double getRotAnchorX() {
+        return this.rotAnchorX;
+    }
+
+    public double getRotAnchorY() {
+        return this.rotAnchorY;
+    }
+
     /**
      * Decelerate the {@link Ship}.
      *

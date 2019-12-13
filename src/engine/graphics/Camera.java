@@ -9,16 +9,18 @@ import java.awt.geom.AffineTransform;
 public class Camera extends GameObject implements Moveable {
 
     final int viewWidth, viewHeight;
-//    final int MIN_TRANSLATE_X, MIN_TRANSLATE_Y,
-//            MAX_TRANSLATE_X, MAX_TRANSLATE_Y;
+    final int MIN_TRANSLATE_X, MIN_TRANSLATE_Y,
+            MAX_TRANSLATE_X, MAX_TRANSLATE_Y;
 
     public Camera(EngineCore engine, AffineTransform transform) {
         super(engine, transform);
         this.viewWidth = engine.frame.getWidth();
         this.viewHeight = engine.frame.getHeight();
 
-//        MIN_TRANSLATE_X = MIN_TRANSLATE_Y = 0;
-
+        MIN_TRANSLATE_X = EngineCore.gameWorld.L_BOUND_X;
+        MIN_TRANSLATE_Y = EngineCore.gameWorld.L_BOUND_Y;
+        MAX_TRANSLATE_X = EngineCore.gameWorld.U_BOUND_X - this.viewWidth;
+        MAX_TRANSLATE_Y = EngineCore.gameWorld.U_BOUND_Y - this.viewHeight;
 
     }
 
@@ -32,11 +34,11 @@ public class Camera extends GameObject implements Moveable {
 
 
     public int getViewWidth() {
-        return viewWidth;
+        return this.viewWidth;
     }
 
     public int getViewHeight() {
-        return viewHeight;
+        return this.viewHeight;
     }
 
     @Override
@@ -47,7 +49,24 @@ public class Camera extends GameObject implements Moveable {
 
     @Override
     public void move() {
-//        this.deltaTransform.translate(5, 5);
+        double tlX, tlY;
+        AffineTransform anchorPoint = new AffineTransform(EngineCore.player.getTransform());
+        anchorPoint.translate(EngineCore.player.getRotAnchorX(), EngineCore.player.getRotAnchorY());
+        tlX = anchorPoint.getTranslateX() - (0.5 * this.viewWidth);
+        tlY = anchorPoint.getTranslateY() - (0.5 * this.viewHeight);
+
+        tlX = Math.max(
+                this.MIN_TRANSLATE_X,
+                Math.min(this.MAX_TRANSLATE_X, tlX)
+        );
+
+        tlY = Math.max(
+                this.MIN_TRANSLATE_Y,
+                Math.min(this.MAX_TRANSLATE_Y, tlY)
+        );
+
+        this.transform.setToTranslation(tlX, tlY);
+
     }
 
 

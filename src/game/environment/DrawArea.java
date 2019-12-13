@@ -23,8 +23,8 @@ public class DrawArea extends Component {
         this.tileSize = texture.getSize();
 
         // Get the width and height of the camera's viewport
-        int viewPortWd = EngineCore.gameCamera.getViewWidth();
-        int viewPortHt = EngineCore.gameCamera.getViewHeight();
+        int viewPortWd = this.parent.engine.frame.getWidth();
+        int viewPortHt = this.parent.engine.getHeight();
 
         // Calculate the size of the draw area
         // The camera rotates, so each side must

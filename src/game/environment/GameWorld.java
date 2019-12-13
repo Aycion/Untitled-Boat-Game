@@ -18,7 +18,7 @@ public class GameWorld extends GameObject {
         super(engine, transform);
 
         L_BOUND_X = L_BOUND_Y = 0;
-        U_BOUND_X = U_BOUND_Y = engine.frame.getWidth() * 10;
+        U_BOUND_X = U_BOUND_Y = this.engine.frame.getWidth() * 10;
 
         this.worldDimension = new Dimension(U_BOUND_X, U_BOUND_Y);
 

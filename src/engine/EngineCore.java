@@ -29,15 +29,15 @@ public class EngineCore extends Canvas implements Runnable {
     public static int frameCount = 0;
     public static int logicCount = 0;
 
-    public static Camera gameCamera;
-
-
-
     public static int logicPerSecond = 60;
     public static AssetCenter assets;
     public static InputCaptor inputCaptor;
     public static GameClock clock;
     public static GameAudio audio;
+
+    public static GameWorld gameWorld;
+    public static Camera gameCamera;
+    public static Player player;
 
     public static EngineCore instance;
 
@@ -69,16 +69,15 @@ public class EngineCore extends Canvas implements Runnable {
         // Set up the game window and interface
         this.initWindow();
 
-        // Initialize the game camera
-        gameCamera = new Camera(this, new AffineTransform());
 
-        this.addObject(gameCamera);
         // Add the game world
         try {
-            this.addObject(new GameWorld(this, new AffineTransform()));
+            gameWorld = new GameWorld(this, new AffineTransform());
+            this.addObject(gameWorld);
 
             // Add the player object to the game
-            this.addObject(new Player(this, AffineTransform.getTranslateInstance(650, 300)));
+            player = new Player(this, AffineTransform.getTranslateInstance(650, 300));
+            this.addObject(player);
 
             // TESTING: Add a single "fortress" to the game
             this.addObject(new Fortress(this, AffineTransform.getTranslateInstance(900, 400)));
@@ -88,6 +87,10 @@ public class EngineCore extends Canvas implements Runnable {
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
         }
+
+        // Initialize and add the game camera
+        gameCamera = new Camera(this, new AffineTransform());
+        this.addObject(gameCamera);
     }
 
     /**
