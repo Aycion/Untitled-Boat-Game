@@ -12,9 +12,9 @@ Features Implemented:
 
 Controls:
 - W: move ship forwards
-- A: rotate ship towards port
-- D: rotate ship towards starboard
+- A: rotate ship towards port (left)
+- D: rotate ship towards starboard (right)
 - I: zoom in with camera
 - O: zoom out with camera
-- SHIFT: switch between boat (rectangular) and life preserver (circular)
-- SPACE: make cannon noise (cannon not supported yet)
+- F (held for ~1 second): switch between boat (rectangular) and life preserver (circular)
+- SPACE: make cannon noise (cannon projectiles not supported yet)
