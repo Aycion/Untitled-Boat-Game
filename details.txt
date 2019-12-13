@@ -3,20 +3,18 @@ Jeremy Tuthill
 
 Features Implemented:
 - Camera System Transition (mandatory)
-- Camera System Rotation
 - Camera System Scaling
 - Rectangle-to-Rectangle Collision
 - Circle-to-Circle Collision
 - Rectangle-to-Circle Collision
+- Animation
 - Audio System
 
 Controls:
-- W: move ship forwards
-- A: rotate ship towards port (left)
-- D: rotate ship towards starboard (right)
+- W: move vessel forwards
+- A: rotate vessel towards port (left)
+- D: rotate vessel towards starboard (right)
 - F (held for ~1 second): switch between boat (rectangular) and life preserver (circular)
 - SPACE: make cannon noise (cannon projectiles not supported yet)
 - UP arrow key: zoom in
 - DOWN arrow key: zoom out
-- LEFT arrow key: rotate camera counterclockwise
-- RIGHT arrow key: rotate camera clockwise

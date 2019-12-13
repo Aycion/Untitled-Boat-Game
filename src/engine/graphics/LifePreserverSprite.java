@@ -15,7 +15,7 @@ public class LifePreserverSprite extends Component implements Animatable {
 
     public LifePreserverSprite(GameObject object) throws ResourceNotFound {
         super(object);
-        this.priority = 1;
+        this.priority = 0;
         spriteImg = (BufferedImage)
                 EngineCore.assets.getImage("lifepreserver.png", 0);
         this.localTransform = new AffineTransform();

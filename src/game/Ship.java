@@ -58,10 +58,9 @@ public class Ship extends GameObject implements Moveable {
         shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship4.png", 0));
         shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship3.png", 0));
         shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship2.png", 0));
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship1.png", 0));
 
         // Create the sprites and add them to the graphics components
-        shipSprite = new CyclingSprite(this, 1, shipSpriteList, 40);
+        shipSprite = new CyclingSprite(this, 0, shipSpriteList, 40);
         lpSprite = new LifePreserverSprite(this);
 
         this.addGraphicsComponent(shipSprite);
