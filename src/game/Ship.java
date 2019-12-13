@@ -56,8 +56,8 @@ public class Ship extends GameObject implements Moveable {
 
         // Calculate the rotation anchor points using the
         //  size of the sprite
-        this.shipRotAnchorX = shipSprite.getWidth() / 2.0;
-        this.shipRotAnchorY = 0.6 * shipSprite.getHeight();
+        this.rotAnchorX = this.shipRotAnchorX = shipSprite.getWidth() / 2.0;
+        this.rotAnchorY = this.shipRotAnchorY = 0.6 * shipSprite.getHeight();
 
         this.lpRotAnchorX = lpSprite.getWidth() / 2.0;
         this.lpRotAnchorY = lpSprite.getHeight() / 2.0;
@@ -153,6 +153,7 @@ public class Ship extends GameObject implements Moveable {
                 * EngineCore.clock.getDeltaTime()
                 * GameObject.movementMult);
 
+        // If the player is paying their respects
         if (InputCaptor.bindingActive("F")) {
             if (super.getGraphicsComponent(shipSprite) != null) {
                 lpTimer++;
