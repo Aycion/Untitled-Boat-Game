@@ -4,79 +4,37 @@ import engine.EngineCore;
 import engine.GameClock;
 import engine.GameObject;
 import engine.ResourceNotFound;
-import jdk.jfr.Experimental;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 public class GameWorld extends GameObject {
 
-    private WaterTexture water;
-    private BufferedImage mapView;
-    private int tileSize;
+    public final int L_BOUND_X, L_BOUND_Y, U_BOUND_X, U_BOUND_Y;
 
     Dimension worldDimension;
 
     public GameWorld(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
 
-        this.worldDimension = new Dimension(
-                engine.getWidth() * 10,
-                engine.getHeight() * 10
-        );
+        L_BOUND_X = L_BOUND_Y = 0;
+        U_BOUND_X = U_BOUND_Y = engine.frame.getWidth() * 10;
+
+        this.worldDimension = new Dimension(U_BOUND_X, U_BOUND_Y);
 
         this.initiative = -1;
-        this.water = new WaterTexture();
 
-        this.tileSize = this.water.getSize();
+        // Add the draw area to the components, which will maintain and
+        //  render the background image
+        this.addGraphicsComponent(new DrawArea(this, new WaterTexture()));
 
     }
 
-    @Override
-    public void logic() {
-        super.logic();
 
-        this.mapView = new BufferedImage(
-                this.engine.gameCamera.getViewWidth() + (2 * this.tileSize),
-                this.engine.gameCamera.getViewHeight() + (2 * this.tileSize),
-                BufferedImage.TYPE_INT_RGB);
-
-        Graphics2D g = this.mapView.createGraphics();
-
-        int camX, camY;
-        camX = this.engine.gameCamera.getViewOriginX();
-        camY = this.engine.gameCamera.getViewOriginY();
-
-        // Start x and y at tile boundaries
-        int startX = camX - (camX % this.tileSize);
-        int startY = camY - (camY % this.tileSize);
-
-
-        for (int x = startX;
-             x <= startX + this.engine.gameCamera.getViewWidth() + (2*this.tileSize);
-             x += this.tileSize) {
-
-
-            for (int y = startY;
-                 y <= startY + this.engine.gameCamera.getViewHeight() + (2*this.tileSize);
-                 y += this.tileSize) {
-                g.drawImage(this.water.getImage(), x - camX, y - camY, null);
-            }
-        }
-
-        g.dispose();
-    }
-
-
-    @Override
-    public void graphic(Graphics2D g) {
-        super.graphic(g);
-        AffineTransform afX = AffineTransform.getTranslateInstance(-this.tileSize, -this.tileSize);
-        g.drawImage(this.mapView, afX, null);
-    }
-
-
+    /**
+     * "Animation" function for displacing pixels. Incomplete and currently slow.
+     * @return
+     */
     public double sineDisplacement() {
         float x = EngineCore.clock.getLastTime() / GameClock.timeUnitsPerSecond;
         return (Math.sin(x) +

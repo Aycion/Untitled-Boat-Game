@@ -9,11 +9,16 @@ import java.awt.geom.AffineTransform;
 public class Camera extends GameObject implements Moveable {
 
     final int viewWidth, viewHeight;
+//    final int MIN_TRANSLATE_X, MIN_TRANSLATE_Y,
+//            MAX_TRANSLATE_X, MAX_TRANSLATE_Y;
 
     public Camera(EngineCore engine, AffineTransform transform) {
         super(engine, transform);
         this.viewWidth = engine.frame.getWidth();
         this.viewHeight = engine.frame.getHeight();
+
+//        MIN_TRANSLATE_X = MIN_TRANSLATE_Y = 0;
+
 
     }
 
@@ -42,7 +47,7 @@ public class Camera extends GameObject implements Moveable {
 
     @Override
     public void move() {
-        this.deltaTransform.rotate(.05, this.getViewWidth()/2f, this.getViewHeight()/2f);
+        this.deltaTransform.translate(5, 5);
     }
 
 

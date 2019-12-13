@@ -10,6 +10,7 @@ import game.environment.GameWorld;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferStrategy;
 import java.util.PriorityQueue;
 
@@ -28,7 +29,7 @@ public class EngineCore extends Canvas implements Runnable {
     public static int frameCount = 0;
     public static int logicCount = 0;
 
-    public Camera gameCamera;
+    public static Camera gameCamera;
 
 
 
@@ -69,9 +70,9 @@ public class EngineCore extends Canvas implements Runnable {
         this.initWindow();
 
         // Initialize the game camera
-        this.gameCamera = new Camera(this, new AffineTransform());
+        gameCamera = new Camera(this, new AffineTransform());
 
-        this.addObject(this.gameCamera);
+        this.addObject(gameCamera);
         // Add the game world
         try {
             this.addObject(new GameWorld(this, new AffineTransform()));
@@ -108,6 +109,7 @@ public class EngineCore extends Canvas implements Runnable {
 
         // Set the screen to be maximized in both dimensions on the screen
         this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // Remove the title bar for a fullscreen effect
         this.frame.setUndecorated(true);
 
         // Close operation; just exits the program when the window closes
@@ -116,7 +118,8 @@ public class EngineCore extends Canvas implements Runnable {
         // Give the frame a LayoutManager
         this.frame.setLayout(new BorderLayout());
 
-        // Add the event listeners
+        // Add the InputCaptor, an invisible frame element
+        //  that captures KeyEvents with its KeyAdapter
         this.frame.add(inputCaptor);
 
         // Add the EngineCore to the game window
@@ -124,7 +127,6 @@ public class EngineCore extends Canvas implements Runnable {
 
         // Pack the elements into the frame, making it as small as possible
         this.frame.pack();
-
 
         // Make the frame focusable so it can capture input
         this.frame.setFocusable(true);
@@ -218,7 +220,17 @@ public class EngineCore extends Canvas implements Runnable {
 
         Graphics2D G = (Graphics2D) bs.getDrawGraphics();
 
-        G.setTransform(this.gameCamera.getTransform());
+        // Transform the graphics context according to the
+        //  current camera transform.
+        try {
+            // Use the camera's inverse transform so camera
+            //  movement can be tracked in terms of world-space
+            //  (i.e. if the camera moves down, everything else
+            //  should move up)
+            G.setTransform(gameCamera.getTransform().createInverse());
+        } catch (NoninvertibleTransformException e) {
+            e.printStackTrace();
+        }
         //calling the graphic methods of every element
         for (GameObject j : tempElements) {
             j.graphic(G);
