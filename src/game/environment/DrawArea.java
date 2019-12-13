@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 
 public class DrawArea extends Component {
 
-    static final int DRAW_PADDING = 3;  // How many tiles to draw offscreen on each side
+    static final int DRAW_PADDING = 5;  // How many tiles to draw offscreen on each side
 
     BufferedImage mapView;          // The image that will store the background
     WaterTexture texture;           // The tileable texture for the background

@@ -9,24 +9,21 @@ public class GameAudio {
     public static final String CANNON_SOUND_FILENAME = "Assets/Audio/cannon.wav";
     public static final String CRASH_SOUND_FILENAME = "Assets/Audio/crash.wav";
 
-    private long prev_ts, cur_ts;
     private HashMap<String, long[]> intervals;
 
     public GameAudio() {
-        playGameMusic();
-        prev_ts = 0;
-        cur_ts = 0;
+        loopSoundClip(GAME_MUSIC_FILENAME);
         intervals = new HashMap<>();
     }
 
-    public void playGameMusic() {
+    public void loopSoundClip(String filename) {
         try {
-            AudioInputStream musicStream = AudioSystem.getAudioInputStream(new File(GAME_MUSIC_FILENAME));
-            Clip musicClip = AudioSystem.getClip();
-            musicClip.open(musicStream);
-            musicClip.loop(Clip.LOOP_CONTINUOUSLY);
+            AudioInputStream musicStream = AudioSystem.getAudioInputStream(new File(filename));
+            Clip soundClip = AudioSystem.getClip();
+            soundClip.open(musicStream);
+            soundClip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            System.out.println("Error in audio initialization.");
+            System.out.println("Encountered an error when looping a sound.");
         }
     }
 
