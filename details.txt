@@ -1,0 +1,16 @@
+Emery Bacon
+Jeremy Tuthill
+
+Features Implemented:
+- Camera System Transition (mandatory)
+- Camera System Rotation
+- Camera System Scaling
+- Rectangle-to-Rectangle Collision
+- Circle-to-Circle Collision
+- Rectangle-to-Circle Collision
+- Audio System
+
+Controls:
+- W: move ship forwards
+- A: rotate ship towards port
+- D: rotate ship towards starboard
