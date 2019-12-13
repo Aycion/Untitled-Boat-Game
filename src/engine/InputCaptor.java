@@ -50,6 +50,9 @@ public class InputCaptor extends JComponent {
         addActionKey("S");
         addActionKey("A");
         addActionKey("D");
+        addActionKey("I");
+        addActionKey("O");
+        addActionKey("F");
         addActionKey("SPACE");
 
     }

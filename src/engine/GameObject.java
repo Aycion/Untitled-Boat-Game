@@ -116,6 +116,17 @@ public class GameObject implements Comparable<GameObject>{
         return null;
     }
 
+    public boolean removeLogicComponent(Component c) {
+        for (Component comp : logicComponents) {
+            if (comp.getClass().equals(c.getClass())) {
+                logicComponents.remove(comp);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Add the specified graphics {@link Component} to the
      *
@@ -151,6 +162,17 @@ public class GameObject implements Comparable<GameObject>{
         }
 
         return null;
+    }
+
+    public boolean removeGraphicsComponent(Component c) {
+        for (Component comp : graphicsComponents) {
+            if (comp.getClass().equals(c.getClass())) {
+                graphicsComponents.remove(comp);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

@@ -1,7 +1,10 @@
 package game;
 
 import engine.*;
+import engine.colliders.CircleCollider;
+import engine.colliders.Collider;
 import engine.colliders.RectangleCollider;
+import engine.graphics.LifePreserverSprite;
 import engine.graphics.ShipSprite;
 
 import java.awt.geom.AffineTransform;
@@ -14,6 +17,15 @@ public class Ship extends GameObject implements Moveable {
             turnRate, baseTurnRate;
 
     double rotAnchorX, rotAnchorY;
+    double shipRotAnchorX, shipRotAnchorY;
+    double lpRotAnchorX, lpRotAnchorY;
+
+    ShipSprite shipSprite;
+    RectangleCollider shipCollider;
+    LifePreserverSprite lpSprite;
+    CircleCollider lpCollider;
+
+    int shipTimer, lpTimer;
 
     /**
      * Main constructor for the {@link Ship} class.
@@ -37,23 +49,38 @@ public class Ship extends GameObject implements Moveable {
         this.baseTurnRate = 1;      // Base turn rate
 
         // Create the sprite and add it to the graphics components
-        ShipSprite sprite = new ShipSprite(this);
-        this.addGraphicsComponent(sprite);
+        shipSprite = new ShipSprite(this);
+        lpSprite = new LifePreserverSprite(this);
+
+        this.addGraphicsComponent(shipSprite);
 
         // Calculate the rotation anchor points using the
         //  size of the sprite
-        this.rotAnchorX = sprite.getWidth() / 2.0;
-        this.rotAnchorY = 0.6 * sprite.getHeight();
+        this.shipRotAnchorX = shipSprite.getWidth() / 2.0;
+        this.shipRotAnchorY = 0.6 * shipSprite.getHeight();
+
+        this.lpRotAnchorX = lpSprite.getWidth() / 2.0;
+        this.lpRotAnchorY = lpSprite.getHeight() / 2.0;
 
         // Create the collider and add it to the components
-        RectangleCollider shipCollider = new RectangleCollider(
+        shipCollider = new RectangleCollider(
                 this,
                 10,
-                sprite.getWidth(),
-                sprite.getHeight()
+                shipSprite.getWidth(),
+                shipSprite.getHeight()
         );
+
+        lpCollider = new CircleCollider(
+                this,
+                10,
+                lpSprite.getWidth()
+        );
+
         this.addLogicComponent(shipCollider);
         this.addGraphicsComponent(shipCollider);
+
+        shipTimer = 0;
+        lpTimer = 0;
     }
 
     /**
@@ -125,6 +152,39 @@ public class Ship extends GameObject implements Moveable {
         this.acceleration = (this.baseAcceleration
                 * EngineCore.clock.getDeltaTime()
                 * GameObject.movementMult);
+
+        if (InputCaptor.bindingActive("F")) {
+            if (super.getGraphicsComponent(shipSprite) != null) {
+                lpTimer++;
+                shipTimer = 0;
+            } else {
+                shipTimer++;
+                lpTimer = 0;
+            }
+
+            if (lpTimer > 20) {
+                super.removeGraphicsComponent(shipSprite);
+                super.removeLogicComponent(shipCollider);
+                super.removeGraphicsComponent(shipCollider);
+                super.addGraphicsComponent(lpSprite);
+                super.addLogicComponent(lpCollider);
+                super.addGraphicsComponent(lpCollider);
+                rotAnchorX = lpRotAnchorX;
+                rotAnchorY = lpRotAnchorY;
+            } else if (shipTimer > 20) {
+                super.removeGraphicsComponent(lpSprite);
+                super.removeLogicComponent(lpCollider);
+                super.removeGraphicsComponent(lpCollider);
+                super.addGraphicsComponent(shipSprite);
+                super.addLogicComponent(shipCollider);
+                super.addGraphicsComponent(shipCollider);
+                rotAnchorX = shipRotAnchorX;
+                rotAnchorY = shipRotAnchorY;
+            }
+        } else {
+            shipTimer = 0;
+            lpTimer = 0;
+        }
 
         this.move();
     }
