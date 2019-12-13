@@ -44,9 +44,9 @@ public class Ship extends GameObject implements Moveable {
         /*
         Base movement attributes
          */
-        this.maxSpeed = 15;         // Maximum translation speed
+        this.maxSpeed = 30;         // Maximum translation speed
         this.baseAcceleration = 2;  // Base translation acceleration
-        this.baseTurnRate = 1;      // Base turn rate
+        this.baseTurnRate = 2;      // Base turn rate
 
         // Create the sprite and add it to the graphics components
         shipSprite = new ShipSprite(this);
