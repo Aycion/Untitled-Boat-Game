@@ -11,10 +11,13 @@ import java.awt.image.BufferedImage;
 
 public class DrawArea extends Component {
 
-    BufferedImage mapView;
-    WaterTexture texture;
+    static final int DRAW_PADDING = 2;  // How many tiles to draw offscreen on each side
 
-    int areaSize, tileSize;
+    BufferedImage mapView;          // The image that will store the background
+    WaterTexture texture;           // The tileable texture for the background
+
+    int areaSize;                   // Pixel size of the overall background image
+    int tileSize;                   // Pixel size of each tile
     int drawOffsetX, drawOffsetY;
 
     public DrawArea(GameObject object, WaterTexture texture) {
@@ -28,14 +31,14 @@ public class DrawArea extends Component {
         int viewPortWd = EngineCore.gameCamera.getViewportWidth();
         int viewPortHt = EngineCore.gameCamera.getViewportHeight();
 
+        // Tile-sized buffer area on each side
+        this.areaSize += 2 * this.tileSize;
         // Calculate the size of the draw area
         // The camera rotates, so each side must
         //  be strictly larger than the viewport's diagonal
         this.areaSize = (int) Math.sqrt(
                 (viewPortWd * viewPortWd) + (viewPortHt * viewPortHt)
         );
-        // Tile-sized buffer area on each side
-        this.areaSize += 2 * this.tileSize;
 
         this.mapView = new BufferedImage(
                 this.areaSize, this.areaSize,
