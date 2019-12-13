@@ -11,7 +11,7 @@ public class Camera extends GameObject implements Moveable {
             MAX_TRANSLATE_X, MAX_TRANSLATE_Y;
 
     final double scaleMin, scaleMax, baseScaleRate, baseRotationRate;
-    double scale, scaleRate, rotationRate;
+    double scale, scaleRate, rotation, rotationRate;
 
 
     public Camera(EngineCore engine, AffineTransform transform) {
@@ -30,6 +30,7 @@ public class Camera extends GameObject implements Moveable {
         this.scaleMax = 1.2;
         this.baseScaleRate = 0.1;
 
+        this.rotation = 0;
         this.baseRotationRate = 1;
 
     }
@@ -60,11 +61,19 @@ public class Camera extends GameObject implements Moveable {
     }
 
     private void rotLeft() {
-        this.transform.rotate(this.rotationRate);
+        this.rotation = (this.rotation + this.rotationRate) % 360;
+//        this.deltaTransform.rotate(this.rotationRate,
+//                0.5 * this.viewWidth,
+//                0.5 * this.viewHeight
+//        );
     }
 
     private void rotRight() {
-        this.transform.rotate(-this.rotationRate);
+        this.rotation = (this.rotation - this.rotationRate) % 360;
+//        this.deltaTransform.rotate(-this.rotationRate,
+//                0.5 * this.viewWidth,
+//                0.5 * this.viewHeight
+//        );
     }
 
     private void readInput() {
@@ -124,12 +133,19 @@ public class Camera extends GameObject implements Moveable {
         );
 
         this.transform.setToTranslation(tlX, tlY);
-        AffineTransform scaleT = AffineTransform.getTranslateInstance(
+
+        // Scaling code
+        AffineTransform scaleRotT = AffineTransform.getTranslateInstance(
                 (this.getViewportWidth() / 2.0) - (this.scale * (this.getViewportWidth()) / 2.0),
                 (this.getViewportHeight() / 2.0) - (this.scale * (this.getViewportHeight()) / 2.0)
         );
-        scaleT.scale(this.scale, this.scale);
-        this.transform.concatenate(scaleT);
+        scaleRotT.scale(this.scale, this.scale);
+
+        // Rotation code - DOES NOT WORK
+//        scaleRotT.rotate(this.rotation, this.viewWidth/2.0, this.viewHeight/2.0);
+
+        // Apply scaling/rotation
+        this.transform.concatenate(scaleRotT);
 
     }
 
