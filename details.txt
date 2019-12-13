@@ -14,7 +14,9 @@ Controls:
 - W: move ship forwards
 - A: rotate ship towards port (left)
 - D: rotate ship towards starboard (right)
-- I: zoom in with camera
-- O: zoom out with camera
 - F (held for ~1 second): switch between boat (rectangular) and life preserver (circular)
 - SPACE: make cannon noise (cannon projectiles not supported yet)
+- UP arrow key: zoom in
+- DOWN arrow key: zoom out
+- LEFT arrow key: rotate camera counterclockwise
+- RIGHT arrow key: rotate camera clockwise
