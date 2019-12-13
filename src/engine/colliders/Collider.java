@@ -79,6 +79,7 @@ public abstract class Collider extends Component {
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
+        g.setStroke(new BasicStroke(2));
         g.setPaint(this.color);
         g.draw(this.area);
     }
