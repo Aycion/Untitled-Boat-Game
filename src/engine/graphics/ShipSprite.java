@@ -17,7 +17,7 @@ public class ShipSprite extends Component implements Animatable {
         super(object);
         this.priority = 1;
         spriteImg = (BufferedImage)
-                EngineCore.assets.getImage("ship1.png", 0);
+                EngineCore.assets.getImage("ship.png", 0);
         this.localTransform = new AffineTransform();
 
     }

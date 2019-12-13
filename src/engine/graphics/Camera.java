@@ -47,6 +47,7 @@ public class Camera extends GameObject implements Moveable {
     public void logic() {
         super.logic();
         this.move();
+
     }
 
     @Override
