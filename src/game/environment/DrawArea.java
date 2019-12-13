@@ -31,14 +31,14 @@ public class DrawArea extends Component {
         int viewPortWd = EngineCore.gameCamera.getViewportWidth();
         int viewPortHt = EngineCore.gameCamera.getViewportHeight();
 
-        // Tile-sized buffer area on each side
-        this.areaSize += 2 * this.tileSize;
         // Calculate the size of the draw area
         // The camera rotates, so each side must
         //  be strictly larger than the viewport's diagonal
         this.areaSize = (int) Math.sqrt(
                 (viewPortWd * viewPortWd) + (viewPortHt * viewPortHt)
         );
+        // Tile-sized buffer area on each side
+        this.areaSize += 2 * this.tileSize;
 
         this.mapView = new BufferedImage(
                 this.areaSize, this.areaSize,
