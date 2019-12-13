@@ -4,10 +4,13 @@ import engine.*;
 import engine.colliders.CircleCollider;
 import engine.colliders.Collider;
 import engine.colliders.RectangleCollider;
+import engine.graphics.CyclingSprite;
 import engine.graphics.LifePreserverSprite;
 import engine.graphics.ShipSprite;
 
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Ship extends GameObject implements Moveable {
 
@@ -20,7 +23,7 @@ public class Ship extends GameObject implements Moveable {
     double shipRotAnchorX, shipRotAnchorY;
     double lpRotAnchorX, lpRotAnchorY;
 
-    ShipSprite shipSprite;
+    CyclingSprite shipSprite;
     RectangleCollider shipCollider;
     LifePreserverSprite lpSprite;
     CircleCollider lpCollider;
@@ -48,8 +51,17 @@ public class Ship extends GameObject implements Moveable {
         this.baseAcceleration = 2;  // Base translation acceleration
         this.baseTurnRate = 2;      // Base turn rate
 
-        // Create the sprite and add it to the graphics components
-        shipSprite = new ShipSprite(this);
+        ArrayList<BufferedImage> shipSpriteList = new ArrayList<>();
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship1.png", 0));
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship2.png", 0));
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship3.png", 0));
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship4.png", 0));
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship3.png", 0));
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship2.png", 0));
+        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship1.png", 0));
+
+        // Create the sprites and add them to the graphics components
+        shipSprite = new CyclingSprite(this, 1, shipSpriteList, 40);
         lpSprite = new LifePreserverSprite(this);
 
         this.addGraphicsComponent(shipSprite);
@@ -57,7 +69,7 @@ public class Ship extends GameObject implements Moveable {
         // Calculate the rotation anchor points using the
         //  size of the sprite
         this.rotAnchorX = this.shipRotAnchorX = shipSprite.getWidth() / 2.0;
-        this.rotAnchorY = this.shipRotAnchorY = 0.6 * shipSprite.getHeight();
+        this.rotAnchorY = this.shipRotAnchorY = shipSprite.getHeight() / 2.0;
 
         this.lpRotAnchorX = lpSprite.getWidth() / 2.0;
         this.lpRotAnchorY = lpSprite.getHeight() / 2.0;
