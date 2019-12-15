@@ -3,7 +3,7 @@ package engine;
 public class GameClock {
     private long startTime, lastTime, timeDelta;
 
-    // Ratio for
+    // Ratio for converting clock time to seconds
     public static final float timeUnitsPerSecond = 1000000000f;
 
     GameClock() {
@@ -26,7 +26,7 @@ public class GameClock {
         return (float) this.timeDelta / timeUnitsPerSecond;
     }
 
-    float getTotalElapsedTime() {
+    public float getTotalElapsedTime() {
         return (float) (System.nanoTime() - this.startTime) / timeUnitsPerSecond;
     }
 }

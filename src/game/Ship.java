@@ -2,9 +2,8 @@ package game;
 
 import engine.*;
 import engine.colliders.CircleCollider;
-import engine.colliders.Collider;
 import engine.colliders.RectangleCollider;
-import engine.graphics.CyclingSprite;
+import engine.graphics.AnimatedShipSprite;
 import engine.graphics.LifePreserverSprite;
 import engine.graphics.ShipSprite;
 
@@ -23,7 +22,7 @@ public class Ship extends GameObject implements Moveable {
     double shipRotAnchorX, shipRotAnchorY;
     double lpRotAnchorX, lpRotAnchorY;
 
-    CyclingSprite shipSprite;
+    AnimatedShipSprite shipSprite;
     RectangleCollider shipCollider;
     LifePreserverSprite lpSprite;
     CircleCollider lpCollider;
@@ -51,16 +50,8 @@ public class Ship extends GameObject implements Moveable {
         this.baseAcceleration = 2;  // Base translation acceleration
         this.baseTurnRate = 2;      // Base turn rate
 
-        ArrayList<BufferedImage> shipSpriteList = new ArrayList<>();
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship1.png", 0));
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship2.png", 0));
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship3.png", 0));
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship4.png", 0));
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship3.png", 0));
-        shipSpriteList.add((BufferedImage) EngineCore.assets.getImage("ship2.png", 0));
-
         // Create the sprites and add them to the graphics components
-        shipSprite = new CyclingSprite(this, 0, shipSpriteList, 40);
+        shipSprite = new AnimatedShipSprite(this);
         lpSprite = new LifePreserverSprite(this);
 
         this.addGraphicsComponent(shipSprite);

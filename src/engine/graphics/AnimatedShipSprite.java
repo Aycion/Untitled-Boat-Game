@@ -1,45 +1,43 @@
 package engine.graphics;
 
+import engine.*;
 import engine.Component;
-import engine.GameObject;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.List;
 
-public class CyclingSprite extends Component implements Animatable {
+public class AnimatedShipSprite extends Component implements Animatable {
     private ArrayList<BufferedImage> images;
-    private int imageIndex, frameCounter, framesPerAnimation;
-
-    // Creates an empty CyclingSprite
-    public CyclingSprite(GameObject parent, int priority, int framesPerAnimation) {
-        super(parent);
-        super.priority = priority;
-        images = new ArrayList<>();
-        this.imageIndex = 0;
-        this.frameCounter = 0;
-        this.framesPerAnimation = framesPerAnimation;
-    }
+    private int imageIndex, animationFrames;
+    private double animationDuration, animationPercent;
 
     // Creates a CyclingSprite and initializes it with the given List
-    public CyclingSprite(GameObject parent, int priority, List<BufferedImage> images, int framesPerAnimation) {
-        this(parent, priority, framesPerAnimation);
-        this.images.addAll(images);
+    public AnimatedShipSprite(GameObject parent) throws ResourceNotFound {
+        this(parent, EngineCore.assets.getImageList("shipanim.png"));
+    }
+    // Creates an empty CyclingSprite
+    public AnimatedShipSprite(GameObject parent, ArrayList<BufferedImage> images) {
+        super(parent);
+
+        this.priority = 1;
+        this.images = images;
+
+        this.imageIndex = 0;
+        this.animationFrames = this.images.size();
+        this.animationDuration = 1; // Duration (in seconds) of animation cycle
+
     }
 
-    public boolean addImage(BufferedImage image) {
-        return this.images.add(image);
-    }
 
     @Override
     public BufferedImage getAnimationFrame() {
-        if (this.frameCounter++ > this.framesPerAnimation) {
-            this.incrementImageIndex();
-            this.frameCounter = 0;
+        if ((this.animationPercent += (EngineCore.clock.getDeltaTime() / this.animationDuration)
+        ) * 100 > 100) {
+            this.animationPercent = 0;
         }
-
+        this.imageIndex = (int) (this.animationPercent * this.animationFrames);
         return images.get(imageIndex);
     }
 
@@ -73,7 +71,4 @@ public class CyclingSprite extends Component implements Animatable {
         return this.images.get(imageIndex).getHeight();
     }
 
-    private void incrementImageIndex() {
-        this.imageIndex = (this.imageIndex + 1) % images.size();
-    }
 }
