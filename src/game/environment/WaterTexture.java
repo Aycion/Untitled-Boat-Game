@@ -8,15 +8,15 @@ import java.awt.image.BufferedImage;
 public class WaterTexture {
     BufferedImage waterImage;
 
-    int size;
+    int tileSize;
 
     public WaterTexture() throws ResourceNotFound {
-        this.waterImage = (BufferedImage) EngineCore.assets.getImage("waterx256.png", 0);
-        this.size = this.waterImage.getWidth();
+        this.waterImage = (BufferedImage) EngineCore.assets.getImage("waterlinesx256.png", 0);
+        this.tileSize = this.waterImage.getWidth();
     }
 
-    public int getSize() {
-        return size;
+    public int getTileSize() {
+        return this.tileSize;
     }
 
     public BufferedImage getImage() {

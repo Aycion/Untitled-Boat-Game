@@ -9,23 +9,40 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class DrawArea extends Component {
+public class Background extends Component {
 
     static final int DRAW_PADDING = 5;  // How many tiles to draw offscreen on each side
-
-    BufferedImage mapView;          // The image that will store the background
+    BufferedImage mapImage;          // The image that will store the background
     WaterTexture texture;           // The tileable texture for the background
 
     int areaSize;                   // Pixel size of the overall background image
     int tileSize;                   // Pixel size of each tile
-    int drawOffsetX, drawOffsetY;
+    int drawOriginX, drawOriginY, drawOffsetX, drawOffsetY;
 
-    public DrawArea(GameObject object, WaterTexture texture) {
+    Color waterBase;
+
+    /**
+     *
+     * @param object
+     * @param texture
+     */
+    public Background(GameObject object, WaterTexture texture) {
         super(object);
+
 
         // Assign the texture the object will use to create the background
         this.texture = texture;
-        this.tileSize = texture.getSize();
+        this.tileSize = texture.getTileSize();
+
+        this.setConstants();
+
+        this.mapImage = this.constructMapView(this.mapImage);
+    }
+
+
+    protected void setConstants() {
+        // Set the background color (underlay beneath the ripple texture)
+        this.waterBase = Color.decode("#027dbd");
 
         // Get the width and height of the camera's viewport
         int viewPortWd = EngineCore.gameCamera.getViewportWidth();
@@ -40,14 +57,8 @@ public class DrawArea extends Component {
         // Tile-sized buffer area on each side
         this.areaSize += 2 * DRAW_PADDING * this.tileSize;
 
-        this.mapView = new BufferedImage(
-                this.areaSize, this.areaSize,
-                BufferedImage.TYPE_INT_RGB);
-
         this.drawOffsetX = (this.areaSize - viewPortWd) / 2;
         this.drawOffsetY = (this.areaSize - viewPortHt) / 2;
-
-        this.constructMapView();
     }
 
     @Override
@@ -81,15 +92,30 @@ public class DrawArea extends Component {
      * boosting performance since it doesn't need to redraw each tile
      * every update.
      */
-    private void constructMapView() {
-        Graphics2D g = this.mapView.createGraphics();
-        for (int x = 0; x <= this.mapView.getWidth(); x += this.tileSize) {
-            for (int y = 0; y <= this.mapView.getHeight(); y += this.tileSize) {
-                g.drawImage(this.texture.getImage(), x, y, null);
+    protected BufferedImage constructMapView(BufferedImage image) {
+        BufferedImage img = new BufferedImage(
+                this.areaSize, this.areaSize,
+                BufferedImage.TYPE_INT_ARGB_PRE
+        );
+        Graphics2D g = img.createGraphics();
+        for (int x = 0; x <= img.getWidth(); x += this.tileSize) {
+            for (int y = 0; y <= img.getHeight(); y += this.tileSize) {
+                g.drawImage(image, x, y, null);
             }
         }
 
         g.dispose();
+        return img;
+    }
+
+    @Override
+    public void logic() {
+        super.logic();
+        int camX = EngineCore.gameCamera.getViewOriginX();
+        int camY = EngineCore.gameCamera.getViewOriginY();
+
+        this.drawOriginX = camX - this.drawOffsetX - (camX % this.tileSize);
+        this.drawOriginY = camY - this.drawOffsetY - (camY % this.tileSize);
     }
 
     /**
@@ -103,14 +129,14 @@ public class DrawArea extends Component {
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
-        int camX = EngineCore.gameCamera.getViewOriginX();
-        int camY = EngineCore.gameCamera.getViewOriginY();
 
-        int drawOriginX = camX - this.drawOffsetX - (camX % this.tileSize);
-        int drawOriginY = camY - this.drawOffsetY - (camY % this.tileSize);
         AffineTransform afX = AffineTransform.getTranslateInstance(
-                drawOriginX, drawOriginY
+                this.drawOriginX, this.drawOriginY
         );
-        g.drawImage(this.mapView, afX, null);
+
+        g.setColor(this.waterBase);
+        g.fillRect(drawOriginX, drawOriginY, this.areaSize, this.areaSize);
+
+        g.drawImage(this.mapImage, afX, null);
     }
 }

@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class ShipSprite extends Component implements Animatable {
+public class ShipSprite extends Component implements StaticImage {
 
     private BufferedImage spriteImg;
 
@@ -34,11 +34,6 @@ public class ShipSprite extends Component implements Animatable {
         return gT;
     }
 
-    @Override
-    public BufferedImage getAnimationFrame() {
-        return spriteImg;
-    }
-
     public int getWidth() {
         return this.spriteImg.getWidth();
     }
@@ -48,10 +43,15 @@ public class ShipSprite extends Component implements Animatable {
     }
 
     @Override
+    public BufferedImage getImage() {
+        return this.spriteImg;
+    }
+
+    @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
         g.drawImage(
-                this.getAnimationFrame(),
+                this.getImage(),
                 this.getGlobalTransform(),
                 null
         );

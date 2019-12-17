@@ -90,6 +90,7 @@ public class EngineCore extends Canvas implements Runnable {
              this.addObject(new Driftwood(this, AffineTransform.getTranslateInstance(200, 500)));
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
+            e.printStackTrace();
         }
 
     }

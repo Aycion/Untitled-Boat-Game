@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class FortressSprite extends Component implements Animatable {
+public class FortressSprite extends Component implements StaticImage {
 
     private BufferedImage spriteImg;
 
@@ -34,7 +34,7 @@ public class FortressSprite extends Component implements Animatable {
     }
 
     @Override
-    public BufferedImage getAnimationFrame() {
+    public BufferedImage getImage() {
         return spriteImg;
     }
 
@@ -50,7 +50,7 @@ public class FortressSprite extends Component implements Animatable {
     public void graphic(Graphics2D g) {
         super.graphic(g);
         g.drawImage(
-                this.getAnimationFrame(),
+                this.getImage(),
                 this.getGlobalTransform(),
                 null
         );

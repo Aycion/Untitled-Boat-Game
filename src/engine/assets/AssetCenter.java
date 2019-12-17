@@ -46,8 +46,8 @@ public class AssetCenter {
                                 )
                         ) && names[j].substring(
                                 names[j].length() - 4
-                        ).equals(".map"))
-                        {
+                        ).equals(".map")
+                        ) {
                             mapAddress = j;
                         }
                     }
@@ -73,7 +73,8 @@ public class AssetCenter {
                         scanner.close();
                         this.Images.put(names[i], newList);
                     }
-                } catch (Exception var10) {
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

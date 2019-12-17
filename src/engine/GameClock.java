@@ -21,7 +21,6 @@ public class GameClock {
         return this.lastTime;
     }
 
-
     public float getDeltaTime() {
         return (float) this.timeDelta / timeUnitsPerSecond;
     }

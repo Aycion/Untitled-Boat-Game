@@ -26,10 +26,12 @@ public class AnimatedShipSprite extends Component implements Animatable {
 
         this.imageIndex = 0;
         this.animationFrames = this.images.size();
-        this.animationDuration = 1; // Duration (in seconds) of animation cycle
+
+        // Duration (in seconds) of animation cycle
+        this.animationDuration = 1;
+        this.animationPercent = 0;
 
     }
-
 
     @Override
     public BufferedImage getAnimationFrame() {
@@ -42,10 +44,20 @@ public class AnimatedShipSprite extends Component implements Animatable {
     }
 
     @Override
+    public BufferedImage getFrameAt(int index) throws ArrayIndexOutOfBoundsException {
+        return this.images.get(index);
+    }
+
+    @Override
+    public ArrayList<BufferedImage> getAllFrames() {
+        return this.images;
+    }
+
+    @Override
     public AffineTransform getLocalTransform() {
         return super.localTransform;
     }
-
+    
     @Override
     public AffineTransform getGlobalTransform() {
         AffineTransform gT = new AffineTransform(this.parent.getTransform());
