@@ -134,8 +134,8 @@ public class Background extends Component {
                 this.drawOriginX, this.drawOriginY
         );
 
-        g.setColor(this.waterBase);
-        g.fillRect(drawOriginX, drawOriginY, this.areaSize, this.areaSize);
+//        g.setColor(this.waterBase);
+//        g.fillRect(drawOriginX, drawOriginY, this.areaSize, this.areaSize);
 
         g.drawImage(this.mapImage, afX, null);
     }

@@ -7,6 +7,8 @@ import engine.GameObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 
 import static engine.EngineCore.audio;
 
@@ -45,6 +47,25 @@ public abstract class Collider extends Component {
         AffineTransform t = new AffineTransform(this.parent.getTransform());
         t.concatenate(this.getLocalTransform());
         return t;
+    }
+
+
+    public Area getArea() {
+        return (Area) this.area.clone();
+    }
+
+
+    /**
+     * Get the {@link PathIterator} from the {@link Collider}'s {@link Shape}.
+     * Pass the {@link Collider}'s world-space (global) transform to the
+     * {@link Shape}'s {@code getPathIterator()} method, then return the
+     * resulting {@link PathIterator}.
+     *
+     * @return The PathIterator transformed by the {@link Collider}'s
+     * transform relative to global coordinates
+     */
+    public PathIterator getTransformedPathIterator() {
+        return this.shape.getPathIterator(this.getGlobalTransform());
     }
 
 
