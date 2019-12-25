@@ -7,22 +7,24 @@ import engine.GameObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
-import java.awt.geom.PathIterator;
+import java.util.ArrayList;
+
 import engine.math.Collisions;
 
 import static engine.EngineCore.audio;
 
 public abstract class Collider extends Component {
-    public static final RectangleCollider dummyRectangle = new RectangleCollider(null, 0, 0, 0);
-    public static final CircleCollider dummyCircle = new CircleCollider(null, 0, 0);
+
+    public static ArrayList<Collidable> collidables = new ArrayList<>();
 
     protected Area area;
     protected Shape shape;
     Color color;
 
-    public Collider(GameObject parent, int priority) {
-        super(parent, priority);
+    public Collider(Collidable parent, int priority) {
+        super((GameObject) parent, priority);
         color = Color.GREEN;
+        collidables.add(parent);
     }
 
     protected void setArea(Shape s) {
@@ -49,7 +51,7 @@ public abstract class Collider extends Component {
 
 
     public Area getArea() {
-        return (Area) this.area.clone();
+        return this.area;
     }
 
 
@@ -59,24 +61,17 @@ public abstract class Collider extends Component {
         this.area = new Area(this.shape);
         this.area.transform(this.getGlobalTransform());
 
-        EngineCore core = this.parent.engine;
         this.color = Color.GREEN;
-        for (GameObject object : core.elements) {
-            if (object != this.parent) {
-                RectangleCollider r = (RectangleCollider) object.getLogicComponent(dummyRectangle);
-                CircleCollider c = (CircleCollider) object.getLogicComponent(dummyCircle);
+        for (Collidable c : collidables) {
+            if (c != this.parent) {
+                Collider other = c.getCollider();
 
-                if (r != null && this.isColliding(r)) {
+                if (this.isColliding(other)) {
                     audio.playSoundClip(GameAudio.CRASH_SOUND_FILENAME, 800);
                     this.color = Color.RED;
-                    r.color = Color.RED;
+                    other.color = Color.RED;
                 }
 
-                if (c != null && this.isColliding(c)) {
-                    audio.playSoundClip(GameAudio.CRASH_SOUND_FILENAME, 800);
-                    this.color = Color.RED;
-                    c.color = Color.RED;
-                }
             }
         }
     }

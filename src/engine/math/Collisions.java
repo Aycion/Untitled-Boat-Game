@@ -45,10 +45,11 @@ public class Collisions {
         boundB = b.getBounds2D();
 
         // Test for bounding box overlap; true == overlap
-        return boundA.getMinX() < boundB.getMaxX()        // A's left to the left of B's right?
-                && boundA.getMinY() > boundB.getMaxY()    // A's right to the right of B's left?
-                && boundB.getMinX() < boundA.getMaxX()    // A's top above B's bottom?
-                && boundB.getMinY() > boundA.getMaxY();   // A's bottom below B's top?
+        // (Note that y coords are top-down)
+        return boundA.getMinX() < boundB.getMaxX()  // A's left to the left of B's right?
+                && boundA.getMaxX() > boundB.getMinX()      // A's right to the right of B's left?
+                && boundA.getMinY() < boundB.getMaxY()      // A's top above B's bottom?
+                && boundA.getMaxY() > boundA.getMinY();
     }
 
     /**

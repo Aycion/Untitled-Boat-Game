@@ -5,17 +5,20 @@ import engine.GameObject;
 import engine.Moveable;
 import engine.ResourceNotFound;
 import engine.colliders.CircleCollider;
+import engine.colliders.Collidable;
+import engine.colliders.Collider;
 import engine.graphics.ShipSprite;
 
 import java.awt.geom.AffineTransform;
 
-public class LifePreserver extends GameObject implements Moveable {
+public class LifePreserver extends GameObject implements Moveable, Collidable {
 
     // Velocity vars
     double speed;
     Direction direction;
 
     private ShipSprite sprite;
+    private CircleCollider lifePreserverCollider;
 
     public LifePreserver(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
@@ -25,13 +28,18 @@ public class LifePreserver extends GameObject implements Moveable {
         this.sprite = new ShipSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        CircleCollider lifePreserverCollider = new CircleCollider(
+        this.lifePreserverCollider = new CircleCollider(
                 this,
                 10,
                 sprite.getWidth()
         );
-        this.addLogicComponent(lifePreserverCollider);
-        this.addGraphicsComponent(lifePreserverCollider);
+        this.addLogicComponent(this.lifePreserverCollider);
+        this.addGraphicsComponent(this.lifePreserverCollider);
+    }
+
+    @Override
+    public Collider getCollider() {
+        return this.lifePreserverCollider;
     }
 
     protected void changeDirection(Direction newDir) {

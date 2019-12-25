@@ -5,13 +5,16 @@ import engine.GameObject;
 import engine.Moveable;
 import engine.ResourceNotFound;
 import engine.colliders.CircleCollider;
+import engine.colliders.Collidable;
+import engine.colliders.Collider;
 import engine.graphics.FortressSprite;
 
 import java.awt.geom.AffineTransform;
 
-public class Fortress extends GameObject {
+public class Fortress extends GameObject implements Collidable {
 
     private FortressSprite sprite;
+    private CircleCollider fortressCollider;
 
     public Fortress(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
@@ -19,13 +22,19 @@ public class Fortress extends GameObject {
         this.sprite = new FortressSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        CircleCollider fortressCollider = new CircleCollider(this, 10, sprite.getWidth());
-        this.addLogicComponent(fortressCollider);
-        this.addGraphicsComponent(fortressCollider);
+        this.fortressCollider = new CircleCollider(this, 10, sprite.getWidth());
+        this.addLogicComponent(this.fortressCollider);
+        this.addGraphicsComponent(this.fortressCollider);
+    }
+
+    @Override
+    public Collider getCollider() {
+        return this.fortressCollider;
     }
 
     @Override
     public void logic() {
         super.logic();
     }
+
 }

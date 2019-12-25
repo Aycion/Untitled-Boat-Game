@@ -3,14 +3,17 @@ package game;
 import engine.EngineCore;
 import engine.GameObject;
 import engine.ResourceNotFound;
+import engine.colliders.Collidable;
+import engine.colliders.Collider;
 import engine.colliders.RectangleCollider;
 import engine.graphics.DriftwoodSprite;
 
 import java.awt.geom.AffineTransform;
 
-public class Driftwood extends GameObject {
+public class Driftwood extends GameObject implements Collidable {
 
     private DriftwoodSprite sprite;
+    private Collider driftwoodCollider;
 
     public Driftwood(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
@@ -18,14 +21,19 @@ public class Driftwood extends GameObject {
         this.sprite = new DriftwoodSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        RectangleCollider driftwoodCollider = new RectangleCollider(
+        this.driftwoodCollider = new RectangleCollider(
                 this,
                 10,
                 sprite.getWidth(),
                 sprite.getHeight()
         );
-        this.addLogicComponent(driftwoodCollider);
-        this.addGraphicsComponent(driftwoodCollider);
+        this.addLogicComponent(this.driftwoodCollider);
+        this.addGraphicsComponent(this.driftwoodCollider);
+    }
+
+    @Override
+    public Collider getCollider() {
+        return this.driftwoodCollider;
     }
 
     @Override

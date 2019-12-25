@@ -2,16 +2,16 @@ package game;
 
 import engine.*;
 import engine.colliders.CircleCollider;
+import engine.colliders.Collidable;
+import engine.colliders.Collider;
 import engine.colliders.RectangleCollider;
-import engine.graphics.AnimatedShipSprite;
-import engine.graphics.LifePreserverSprite;
-import engine.graphics.ShipSprite;
+import engine.graphics.*;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Ship extends GameObject implements Moveable {
+public class Ship extends GameObject implements Moveable, Collidable {
 
     // Velocity vars
     double speed, maxSpeed,
@@ -24,8 +24,11 @@ public class Ship extends GameObject implements Moveable {
 
     AnimatedShipSprite shipSprite;
     RectangleCollider shipCollider;
+
     LifePreserverSprite lpSprite;
     CircleCollider lpCollider;
+
+    Collider activeCollider;
 
     int shipTimer, lpTimer;
 
@@ -78,11 +81,17 @@ public class Ship extends GameObject implements Moveable {
                 lpSprite.getWidth()
         );
 
-        this.addLogicComponent(shipCollider);
-        this.addGraphicsComponent(shipCollider);
+        this.activeCollider = this.shipCollider;
+
+        this.addLogicComponent(this.activeCollider);
+        this.addGraphicsComponent(this.activeCollider);
 
         shipTimer = 0;
         lpTimer = 0;
+    }
+
+    public Collider getCollider() {
+        return this.activeCollider;
     }
 
     public double getRotAnchorX() {
@@ -150,6 +159,16 @@ public class Ship extends GameObject implements Moveable {
         );
     }
 
+    protected void replaceCollider(Collider replacement) {
+        super.removeLogicComponent(this.activeCollider);
+        super.removeGraphicsComponent(this.activeCollider);
+
+        this.activeCollider = replacement;
+
+        super.addLogicComponent(this.activeCollider);
+        super.addGraphicsComponent(this.activeCollider);
+    }
+
 
     @Override
     public void logic() {
@@ -175,22 +194,18 @@ public class Ship extends GameObject implements Moveable {
 
             if (lpTimer > 20) {
                 super.removeGraphicsComponent(shipSprite);
-                super.removeLogicComponent(shipCollider);
-                super.removeGraphicsComponent(shipCollider);
                 super.addGraphicsComponent(lpSprite);
-                super.addLogicComponent(lpCollider);
-                super.addGraphicsComponent(lpCollider);
                 rotAnchorX = lpRotAnchorX;
                 rotAnchorY = lpRotAnchorY;
+
+                this.replaceCollider(this.lpCollider);
             } else if (shipTimer > 20) {
                 super.removeGraphicsComponent(lpSprite);
-                super.removeLogicComponent(lpCollider);
-                super.removeGraphicsComponent(lpCollider);
                 super.addGraphicsComponent(shipSprite);
-                super.addLogicComponent(shipCollider);
-                super.addGraphicsComponent(shipCollider);
                 rotAnchorX = shipRotAnchorX;
                 rotAnchorY = shipRotAnchorY;
+
+                this.replaceCollider(this.shipCollider);
             }
         } else {
             shipTimer = 0;
