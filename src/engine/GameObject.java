@@ -78,7 +78,7 @@ public class GameObject implements Comparable<GameObject>{
 
 
     /**
-     * Attach a new component to the queue thereof.
+     * Attach a new component to the queue.
      * <p>
      * Returns true if the component isn't already in the queue,
      * otherwise return false;
@@ -89,8 +89,8 @@ public class GameObject implements Comparable<GameObject>{
      */
     public boolean addLogicComponent(Component c) {
 
-        if (!logicComponents.contains(c)) {
-            logicComponents.add(c);
+        if (!this.logicComponents.contains(c)) {
+            this.logicComponents.add(c);
 
             return true;
         }
@@ -107,7 +107,7 @@ public class GameObject implements Comparable<GameObject>{
      * @return The requested component or null.
      */
     public Component getLogicComponent(Component c) {
-        for (Component comp : logicComponents) {
+        for (Component comp : this.logicComponents) {
             if (comp.getClass().equals(c.getClass())) {
                 return comp;
             }
@@ -117,9 +117,9 @@ public class GameObject implements Comparable<GameObject>{
     }
 
     public boolean removeLogicComponent(Component c) {
-        for (Component comp : logicComponents) {
+        for (Component comp : this.logicComponents) {
             if (comp.getClass().equals(c.getClass())) {
-                logicComponents.remove(comp);
+                this.logicComponents.remove(comp);
                 return true;
             }
         }
@@ -136,10 +136,10 @@ public class GameObject implements Comparable<GameObject>{
      */
     public boolean addGraphicsComponent(Component c) {
 
-        if (!graphicsComponents.contains(c)) {
+        if (!this.graphicsComponents.contains(c)) {
             // If logicComponents doesn't already contain c, add c to
             //  the priority queue
-            graphicsComponents.add(c);
+            this.graphicsComponents.add(c);
             return true;
         }
         return false;
@@ -155,7 +155,7 @@ public class GameObject implements Comparable<GameObject>{
      * @return The requested {@link Component} or null.
      */
     public Component getGraphicsComponent(Component c) {
-        for (Component comp : graphicsComponents) {
+        for (Component comp : this.graphicsComponents) {
             if (comp.getClass().equals(c.getClass())) {
                 return comp;
             }
@@ -165,9 +165,9 @@ public class GameObject implements Comparable<GameObject>{
     }
 
     public boolean removeGraphicsComponent(Component c) {
-        for (Component comp : graphicsComponents) {
+        for (Component comp : this.graphicsComponents) {
             if (comp.getClass().equals(c.getClass())) {
-                graphicsComponents.remove(comp);
+                this.graphicsComponents.remove(comp);
                 return true;
             }
         }

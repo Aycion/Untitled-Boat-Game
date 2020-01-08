@@ -1,7 +1,8 @@
-package engine.graphics;
+package game.assets.sprites;
 
 import engine.*;
 import engine.Component;
+import engine.graphics.Animatable;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

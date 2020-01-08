@@ -1,25 +1,29 @@
 package engine.graphics;
 
 import engine.Component;
-import engine.EngineCore;
 import engine.GameObject;
-import engine.ResourceNotFound;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class DriftwoodSprite extends Component implements StaticImage {
+public class SpriteImage extends Component {
+    protected BufferedImage spriteImg;
 
-    private BufferedImage spriteImg;
+    public SpriteImage(GameObject parent, BufferedImage image) {
+        super(parent);
 
-    public DriftwoodSprite(GameObject object) throws ResourceNotFound {
-        super(object);
         this.priority = 1;
-        spriteImg = (BufferedImage)
-                EngineCore.assets.getImage("driftwood.png", 0);
-        this.localTransform = new AffineTransform();
+        this.spriteImg = image;
 
+    }
+
+    public int getWidth() {
+        return this.spriteImg.getWidth();
+    }
+
+    public int getHeight() {
+        return this.spriteImg.getHeight();
     }
 
     @Override
@@ -34,24 +38,15 @@ public class DriftwoodSprite extends Component implements StaticImage {
         return gT;
     }
 
-    @Override
-    public BufferedImage getImage() {
-        return spriteImg;
-    }
-
-    public int getWidth() {
-        return this.spriteImg.getWidth();
-    }
-
-    public int getHeight() {
-        return this.spriteImg.getHeight();
+    public BufferedImage getSpriteImg() {
+        return this.spriteImg;
     }
 
     @Override
     public void graphic(Graphics2D g) {
         super.graphic(g);
         g.drawImage(
-                this.getImage(),
+                this.getSpriteImg(),
                 this.getGlobalTransform(),
                 null
         );

@@ -13,9 +13,10 @@ public class WorldMap extends GameObject {
 
         this.initiative = -1;
 
-        // Add the draw area to the components, which will maintain and
-        //  render the background image
-//        this.addGraphicsComponent(new Background(this, new WaterTexture()));
+        /*
+         Add the draw area to the components, which will maintain and
+         render the background image
+         */
         AnimatedBackground animatedBackground = new AnimatedBackground(this, new WaterAnimation());
         this.addLogicComponent(animatedBackground);
         this.addGraphicsComponent(animatedBackground);

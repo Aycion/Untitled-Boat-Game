@@ -4,6 +4,7 @@ import engine.EngineCore;
 import engine.GameAudio;
 import engine.InputCaptor;
 import engine.ResourceNotFound;
+import game.assets.Ship;
 
 import java.awt.geom.AffineTransform;
 

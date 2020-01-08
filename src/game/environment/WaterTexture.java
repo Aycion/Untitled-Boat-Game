@@ -11,7 +11,7 @@ public class WaterTexture {
     int tileSize;
 
     public WaterTexture() throws ResourceNotFound {
-        this.waterImage = (BufferedImage) EngineCore.assets.getImage("waterlinesx256.png", 0);
+        this.waterImage = EngineCore.assets.getImage("waterlinesx256.png", 0);
         this.tileSize = this.waterImage.getWidth();
     }
 

@@ -13,8 +13,8 @@ public class GameWorld extends GameObject {
     public GameWorld(EngineCore engine, AffineTransform transform) {
         super(engine, transform);
 
-        L_BOUND_X = L_BOUND_Y = 0;
-        U_BOUND_X = U_BOUND_Y = this.engine.frame.getWidth() * 5;
+        this.L_BOUND_X = this.L_BOUND_Y = 0;
+        this.U_BOUND_X = this.U_BOUND_Y = this.engine.frame.getWidth() * 5;
 
         this.initiative = 0;
 

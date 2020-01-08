@@ -17,10 +17,11 @@ public abstract class Component implements Comparable<Component> {
     protected AffineTransform localTransform;
 
     public Component(GameObject object) {
-        parent = object;
-        this.localTransform = new AffineTransform();
+        this.parent = object;
         this.active = true;
         this.priority = 0;
+
+        this.localTransform = new AffineTransform();
     }
 
     public Component(GameObject object, int priority) {
@@ -31,6 +32,10 @@ public abstract class Component implements Comparable<Component> {
     public abstract AffineTransform getLocalTransform();
 
     public abstract AffineTransform getGlobalTransform();
+
+    public GameObject getParent() {
+        return this.parent;
+    }
 
     public void logic() {
 

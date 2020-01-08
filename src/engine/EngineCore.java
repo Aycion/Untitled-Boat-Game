@@ -1,9 +1,9 @@
 package engine;
 
-import engine.assets.AssetCenter;
+import engine.assetmanager.AssetCenter;
 import engine.graphics.Camera;
-import game.Driftwood;
-import game.Fortress;
+import game.assets.Driftwood;
+import game.assets.Fortress;
 import game.Player;
 import game.environment.GameWorld;
 import game.environment.WorldMap;
@@ -18,14 +18,13 @@ import java.util.PriorityQueue;
 public class EngineCore extends Canvas implements Runnable {
 
     // Game window dimensions
-    public int scale;
     public String name;         // The name to appear in the window title bar
     public JFrame frame;        // The game window that holds the UI (this class)
     public Boolean running;     // Whether the game is currently running
 
     private int sleepTime = 15;  // How long to sleep in-between updates
 
-    public PriorityQueue<GameObject> elements, tempElements;
+    public PriorityQueue<GameObject> gameObjects, tempObjects;
 
     public static int frameCount = 0;
     public static int logicCount = 0;
@@ -44,27 +43,25 @@ public class EngineCore extends Canvas implements Runnable {
 
     /**
      * Main constructor for creating an instance of the game
-     * @param scale
-     * @param name
-     * @param path
+     * @param name The name of the process (for the window)
+     * @param assetPath The path to the assets folder
      */
-    public EngineCore(int scale, String name, String path) {
+    public EngineCore(String name, String assetPath) {
         EngineCore.instance = this;
 
-        // Initialize the variables
-        this.scale = scale;
+        /*
+        Initialize the static global elements
+         */
+        inputCaptor = new InputCaptor();        // Input handler
+        assets = new AssetCenter(assetPath);    // Asset manager
+        clock = new GameClock();    // Game clock
+        audio = new GameAudio();    // Audio manager
+
+        // Process name
         this.name = name;
 
-        this.frame = new JFrame(name);
-
-        inputCaptor = new InputCaptor();
-
-        // Starting the data collection/storage systems
-        assets = new AssetCenter(path);
-        elements = new PriorityQueue<>();
-
-        clock = new GameClock();
-        audio = new GameAudio();
+        // Initialize the instance variables
+        this.gameObjects = new PriorityQueue<>();
 
         // Set up the game window and interface
         this.initWindow();
@@ -77,22 +74,26 @@ public class EngineCore extends Canvas implements Runnable {
         gameCamera = new Camera(this, new AffineTransform());
         this.addObject(gameCamera);
 
+        /*
+        Add objects that rely on assets (may throw exceptions)
+         */
         try {
+            // World map (and assoc. water texture)
             this.addObject(new WorldMap(this, new AffineTransform()));
+
             // Add the player object to the game
             player = new Player(this, AffineTransform.getTranslateInstance(650, 300));
             this.addObject(player);
 
-            // TESTING: Add a single "fortress" to the game
+            // TESTING: Add a fortress to the game
             this.addObject(new Fortress(this, AffineTransform.getTranslateInstance(900, 400)));
 
-            // TESTING: Add a single piece of driftwood to the game
+            // TESTING: Add a piece of driftwood to the game
              this.addObject(new Driftwood(this, AffineTransform.getTranslateInstance(200, 500)));
         } catch (ResourceNotFound e) {
             System.err.println("Image resource not found");
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -112,8 +113,12 @@ public class EngineCore extends Canvas implements Runnable {
      */
     private void initWindow() {
 
+        // Main game window
+        this.frame = new JFrame(this.name);
+
         // Set the screen to be maximized in both dimensions on the screen
         this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         // Remove the title bar for a fullscreen effect
         this.frame.setUndecorated(true);
 
@@ -137,22 +142,18 @@ public class EngineCore extends Canvas implements Runnable {
         this.frame.setFocusable(true);
         this.frame.requestFocusInWindow();
 
-        this.frame.setAlwaysOnTop(false);
 
         // Set the constants for the frame
+        this.frame.setAlwaysOnTop(false);
         this.frame.setResizable(false);
         this.frame.setLocationRelativeTo(null);
         this.frame.setVisible(true);
 
     }
 
+
     public synchronized void start() {
         this.running = true;
-        new Thread(this).start();
-    }
-
-    public synchronized void stop() {
-        this.running = false;
         new Thread(this).start();
     }
 
@@ -165,9 +166,9 @@ public class EngineCore extends Canvas implements Runnable {
         while (this.running) {
             clock.update();
 
-            frame.requestFocusInWindow();
-            tempElements = new PriorityQueue<>(elements);
-            boolean render = true;
+//            this.frame.requestFocusInWindow();
+            this.tempObjects = new PriorityQueue<>(this.gameObjects);
+            boolean render = false;
 
             // Tracks when logic should update, informed by logicPerSecond
             logicDelta += clock.getDeltaTime() * logicPerSecond;
@@ -175,20 +176,20 @@ public class EngineCore extends Canvas implements Runnable {
             //Logic set to perform only 60 times per second
             if (logicDelta >= 1) {
                 logicCount++;
-                logic();
+                this.logic();
                 logicDelta -= 1;
                 render = true;
             }
 
             //Sleep to limit the number of graphic updates (too much would slow the logic too)
             try {
-                Thread.sleep(sleepTime);
+                Thread.sleep(this.sleepTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (render) {
                 frameCount++;
-                graphic();
+                this.graphic();
             }
 
             //Graphics update free to use all available resources.
@@ -208,7 +209,7 @@ public class EngineCore extends Canvas implements Runnable {
     }
 
     public void logic() {
-        for (GameObject j : tempElements) {
+        for (GameObject j : this.tempObjects) {
             j.logic();
         }
 
@@ -217,9 +218,9 @@ public class EngineCore extends Canvas implements Runnable {
 
     public void graphic() {
 
-        BufferStrategy bs = getBufferStrategy();
+        BufferStrategy bs = super.getBufferStrategy();
         if (bs == null) {
-            createBufferStrategy(3);
+            super.createBufferStrategy(3);
             return;
         }
 
@@ -237,7 +238,7 @@ public class EngineCore extends Canvas implements Runnable {
             e.printStackTrace();
         }
         //calling the graphic methods of every element
-        for (GameObject j : tempElements) {
+        for (GameObject j : this.tempObjects) {
             j.graphic(G);
         }
 
@@ -247,7 +248,7 @@ public class EngineCore extends Canvas implements Runnable {
 
 
     public void addObject(GameObject newObject) {
-        elements.add(newObject);
+        this.gameObjects.add(newObject);
     }
 
 }

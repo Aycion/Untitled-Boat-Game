@@ -1,4 +1,4 @@
-package game;
+package game.assets;
 
 import engine.EngineCore;
 import engine.GameObject;
@@ -7,7 +7,7 @@ import engine.ResourceNotFound;
 import engine.colliders.CircleCollider;
 import engine.colliders.Collidable;
 import engine.colliders.Collider;
-import engine.graphics.ShipSprite;
+import game.assets.sprites.ShipSprite;
 
 import java.awt.geom.AffineTransform;
 
@@ -15,7 +15,6 @@ public class LifePreserver extends GameObject implements Moveable, Collidable {
 
     // Velocity vars
     double speed;
-    Direction direction;
 
     private ShipSprite sprite;
     private CircleCollider lifePreserverCollider;
@@ -31,7 +30,7 @@ public class LifePreserver extends GameObject implements Moveable, Collidable {
         this.lifePreserverCollider = new CircleCollider(
                 this,
                 10,
-                sprite.getWidth()
+                this.sprite.getWidth()
         );
         this.addLogicComponent(this.lifePreserverCollider);
         this.addGraphicsComponent(this.lifePreserverCollider);
@@ -40,22 +39,6 @@ public class LifePreserver extends GameObject implements Moveable, Collidable {
     @Override
     public Collider getCollider() {
         return this.lifePreserverCollider;
-    }
-
-    protected void changeDirection(Direction newDir) {
-        if (this.direction != newDir) {
-
-            // Calculate the angle of rotation based on the
-            //  previous direction and the new one, then add
-            //  the rotation to the object's deltaTransform
-            this.deltaTransform.rotate(
-                    Math.toRadians(this.direction.getAngleDiff(newDir)),
-                    this.sprite.getWidth() / 2.0,
-                    0.6 * this.sprite.getHeight()
-            );
-
-            this.direction = newDir;
-        }
     }
 
     @Override

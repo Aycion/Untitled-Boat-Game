@@ -1,13 +1,12 @@
-package game;
+package game.assets;
 
 import engine.EngineCore;
 import engine.GameObject;
-import engine.Moveable;
 import engine.ResourceNotFound;
 import engine.colliders.CircleCollider;
 import engine.colliders.Collidable;
 import engine.colliders.Collider;
-import engine.graphics.FortressSprite;
+import game.assets.sprites.FortressSprite;
 
 import java.awt.geom.AffineTransform;
 
@@ -22,7 +21,8 @@ public class Fortress extends GameObject implements Collidable {
         this.sprite = new FortressSprite(this);
         this.addGraphicsComponent(this.sprite);
 
-        this.fortressCollider = new CircleCollider(this, 10, sprite.getWidth());
+        this.fortressCollider = new CircleCollider(this, 10, this.sprite.getWidth());
+
         this.addLogicComponent(this.fortressCollider);
         this.addGraphicsComponent(this.fortressCollider);
     }
@@ -32,9 +32,5 @@ public class Fortress extends GameObject implements Collidable {
         return this.fortressCollider;
     }
 
-    @Override
-    public void logic() {
-        super.logic();
-    }
 
 }

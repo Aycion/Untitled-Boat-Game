@@ -1,4 +1,4 @@
-package engine.assets;
+package engine.assetmanager;
 
 import javax.swing.*;
 

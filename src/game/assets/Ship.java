@@ -1,15 +1,14 @@
-package game;
+package game.assets;
 
 import engine.*;
 import engine.colliders.CircleCollider;
 import engine.colliders.Collidable;
 import engine.colliders.Collider;
 import engine.colliders.RectangleCollider;
-import engine.graphics.*;
+import game.assets.sprites.AnimatedShipSprite;
+import game.assets.sprites.LifePreserverSprite;
 
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Ship extends GameObject implements Moveable, Collidable {
 
@@ -39,9 +38,9 @@ public class Ship extends GameObject implements Moveable, Collidable {
      * the sprite and add it to the graphics components. Finally,
      * create the {@link Ship}'s collider as a RectangleCollider and
      * add it to the logic and graphics components.
-     * @param engine
-     * @param transform
-     * @throws ResourceNotFound
+     * @param engine The main game engine object
+     * @param transform The transform for this GameObject
+     * @throws ResourceNotFound If the sprite resource can't be loaded
      */
     public Ship(EngineCore engine, AffineTransform transform) throws ResourceNotFound {
         super(engine, transform);
@@ -54,31 +53,31 @@ public class Ship extends GameObject implements Moveable, Collidable {
         this.baseTurnRate = 2;      // Base turn rate
 
         // Create the sprites and add them to the graphics components
-        shipSprite = new AnimatedShipSprite(this);
-        lpSprite = new LifePreserverSprite(this);
+        this.shipSprite = new AnimatedShipSprite(this);
+        this.lpSprite = new LifePreserverSprite(this);
 
-        this.addGraphicsComponent(shipSprite);
+        this.addGraphicsComponent(this.shipSprite);
 
         // Calculate the rotation anchor points using the
         //  size of the sprite
-        this.rotAnchorX = this.shipRotAnchorX = shipSprite.getWidth() / 2.0;
-        this.rotAnchorY = this.shipRotAnchorY = shipSprite.getHeight() / 2.0;
+        this.rotAnchorX = this.shipRotAnchorX = this.shipSprite.getWidth() / 2.0;
+        this.rotAnchorY = this.shipRotAnchorY = this.shipSprite.getHeight() / 2.0;
 
-        this.lpRotAnchorX = lpSprite.getWidth() / 2.0;
-        this.lpRotAnchorY = lpSprite.getHeight() / 2.0;
+        this.lpRotAnchorX = this.lpSprite.getWidth() / 2.0;
+        this.lpRotAnchorY = this.lpSprite.getHeight() / 2.0;
 
         // Create the collider and add it to the components
-        shipCollider = new RectangleCollider(
+        this.shipCollider = new RectangleCollider(
                 this,
                 10,
-                shipSprite.getWidth(),
-                shipSprite.getHeight()
+                this.shipSprite.getWidth(),
+                this.shipSprite.getHeight()
         );
 
-        lpCollider = new CircleCollider(
+        this.lpCollider = new CircleCollider(
                 this,
                 10,
-                lpSprite.getWidth()
+                this.lpSprite.getWidth()
         );
 
         this.activeCollider = this.shipCollider;
@@ -86,8 +85,8 @@ public class Ship extends GameObject implements Moveable, Collidable {
         this.addLogicComponent(this.activeCollider);
         this.addGraphicsComponent(this.activeCollider);
 
-        shipTimer = 0;
-        lpTimer = 0;
+        this.shipTimer = 0;
+        this.lpTimer = 0;
     }
 
     public Collider getCollider() {
@@ -184,32 +183,32 @@ public class Ship extends GameObject implements Moveable, Collidable {
 
         // If the player is paying their respects
         if (InputCaptor.bindingActive("F")) {
-            if (super.getGraphicsComponent(shipSprite) != null) {
-                lpTimer++;
-                shipTimer = 0;
+            if (super.getGraphicsComponent(this.shipSprite) != null) {
+                this.lpTimer++;
+                this.shipTimer = 0;
             } else {
-                shipTimer++;
-                lpTimer = 0;
+                this.shipTimer++;
+                this.lpTimer = 0;
             }
 
-            if (lpTimer > 20) {
-                super.removeGraphicsComponent(shipSprite);
-                super.addGraphicsComponent(lpSprite);
-                rotAnchorX = lpRotAnchorX;
-                rotAnchorY = lpRotAnchorY;
+            if (this.lpTimer > 20) {
+                super.removeGraphicsComponent(this.shipSprite);
+                super.addGraphicsComponent(this.lpSprite);
+                this.rotAnchorX = this.lpRotAnchorX;
+                this.rotAnchorY = this.lpRotAnchorY;
 
                 this.replaceCollider(this.lpCollider);
-            } else if (shipTimer > 20) {
-                super.removeGraphicsComponent(lpSprite);
-                super.addGraphicsComponent(shipSprite);
-                rotAnchorX = shipRotAnchorX;
-                rotAnchorY = shipRotAnchorY;
+            } else if (this.shipTimer > 20) {
+                super.removeGraphicsComponent(this.lpSprite);
+                super.addGraphicsComponent(this.shipSprite);
+                this.rotAnchorX = this.shipRotAnchorX;
+                this.rotAnchorY = this.shipRotAnchorY;
 
                 this.replaceCollider(this.shipCollider);
             }
         } else {
-            shipTimer = 0;
-            lpTimer = 0;
+            this.shipTimer = 0;
+            this.lpTimer = 0;
         }
 
         this.move();
