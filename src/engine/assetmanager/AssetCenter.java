@@ -25,18 +25,25 @@ public class AssetCenter {
 
         File directory = new File(this.path);
 
-        // Get the lists of files that satisfy the provided filters
+        // Get the lists of files we'll need
         File[] imageListing = directory.listFiles(new ImageFileFilter());
         File[] mapListing = directory.listFiles(new MapFileFilter());
 
         if (imageListing == null) {
-            throw new IllegalArgumentException("Your assets directory is empty!");
+            /*
+             If imageListing is null, there are no matching files in
+             the specified directory
+             */
+            throw new IllegalArgumentException(
+                    "No matching files in your Assets directory!"
+            );
         }
 
+        // For each file in the list of image files
         for (File imageFile : imageListing) {
             String imageFileName = imageFile.getName();
 
-            System.out.println(imageFile.getName());
+            System.out.println(imageFileName);
 
             try {
                 File imageMap = null;
@@ -47,10 +54,16 @@ public class AssetCenter {
                         String mapFileName = mapFile.getName();
 
                         // Find the index at which the extension begins
-                        int extStart = imageFile.getName().lastIndexOf('.');
+                        int imgExtStart = imageFile.getName().lastIndexOf('.');
+                        int mapExtStart = mapFileName.lastIndexOf('.');
 
-                        if (mapFileName.length() > extStart && mapFileName.substring(0, extStart).equals(
-                                imageFileName.substring(0, extStart))) {
+                        /*
+                         Ensure the extensions are at the same index, and
+                         then that the names leading up to it are equal
+                         */
+                        if (imgExtStart == mapExtStart &&
+                                mapFileName.substring(0, mapExtStart)
+                                .equals(imageFileName.substring(0, imgExtStart))) {
                             imageMap = mapFile;
                         }
                     }
@@ -59,19 +72,36 @@ public class AssetCenter {
                 ArrayList<BufferedImage> newList = new ArrayList<>();
 
                 if (imageMap == null) {
+                    /*
+                     If the map file does not exist, read the entire image in
+                     as one sprite
+                     */
                     BufferedImage img = ImageIO.read(imageFile);
                     newList.add(img);
                 } else {
+                    /*
+                    If there is an associated map file, read the contents in groups
+                    of 4. The contents represent pixel locations and are given as
+                    x, y, width, and height.
+                     */
                     Scanner scanner = new Scanner(imageMap);
                     System.out.println(imageMap.getName());
-                    int[] aspects = new int[4];
+                    int[] subImageBounds = new int[4];
+
+                    BufferedImage newImage = ImageIO.read(imageFile);
 
                     while (scanner.hasNextInt()) {
                         for (int k = 0; k < 4; ++k) {
-                            aspects[k] = scanner.nextInt();
+                            // Construct the bounds from a group of 4 numbers
+                            subImageBounds[k] = scanner.nextInt();
                         }
 
-                        newList.add(ImageIO.read(imageFile).getSubimage(aspects[0], aspects[1], aspects[2], aspects[3]));
+                        /*
+                         Using the coordinates, snip the image file and add the
+                         snipping to the array
+                         */
+
+                        newList.add(newImage.getSubimage(subImageBounds[0], subImageBounds[1], subImageBounds[2], subImageBounds[3]));
                     }
 
                     scanner.close();

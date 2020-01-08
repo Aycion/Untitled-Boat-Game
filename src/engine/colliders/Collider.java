@@ -9,10 +9,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 
-import engine.colliders.math.Collisions;
+import engine.math.Collisions;
 
 import static engine.EngineCore.audio;
-import static engine.EngineCore.gameWorld;
 
 public abstract class Collider extends Component {
 
@@ -84,7 +83,7 @@ public abstract class Collider extends Component {
         g.setStroke(new BasicStroke(2));
         g.setPaint(this.color);
 
-        g.draw(this.area);
+        g.draw(this.getArea());
 
     }
 }

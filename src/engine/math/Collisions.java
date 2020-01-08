@@ -1,4 +1,4 @@
-package engine.colliders.math;
+package engine.math;
 
 import engine.colliders.Collider;
 
@@ -71,11 +71,11 @@ public class Collisions {
      */
     public static boolean testSATCollision(Area a, Area b) {
         ArrayList<Point2D> verticesA, verticesB, normals;
-//        System.out.println("Bound overlap between " + a.getClass() + " and " + b.getClass());
 
         // Get the path iterators from the areas.
         verticesA = getAreaVertices(a.getPathIterator(null));
         verticesB = getAreaVertices(b.getPathIterator(null));
+        // Normals is a list of Vectors
         normals = getNormals(verticesA);
         normals.addAll(getNormals(verticesB));
 
