@@ -1,4 +1,4 @@
-package engine;
+package engine.ecs;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -8,7 +8,7 @@ import java.awt.geom.AffineTransform;
  * the state of a GameObject
  *
  */
-public abstract class Component implements Comparable<Component> {
+public abstract class GameComponent implements Comparable<GameComponent> {
 
     protected GameObject parent;
 
@@ -16,7 +16,7 @@ public abstract class Component implements Comparable<Component> {
     public int priority;
     protected AffineTransform localTransform;
 
-    public Component(GameObject object) {
+    public GameComponent(GameObject object) {
         this.parent = object;
         this.active = true;
         this.priority = 0;
@@ -24,7 +24,7 @@ public abstract class Component implements Comparable<Component> {
         this.localTransform = new AffineTransform();
     }
 
-    public Component(GameObject object, int priority) {
+    public GameComponent(GameObject object, int priority) {
         this(object);
         this.priority = priority;
     }
@@ -33,21 +33,13 @@ public abstract class Component implements Comparable<Component> {
 
     public abstract AffineTransform getGlobalTransform();
 
+
     public GameObject getParent() {
         return this.parent;
     }
 
-    public void logic() {
-
-    }
-
-    public void graphic(Graphics2D g) {
-
-    }
-
-
     @Override
-    public int compareTo(Component o) {
+    public int compareTo(GameComponent o) {
         return this.priority - o.priority;
     }
 
@@ -59,5 +51,14 @@ public abstract class Component implements Comparable<Component> {
     @Override
     public int hashCode() {
         return this.getClass().hashCode();
+    }
+
+    public interface Updatable {
+        void logic();
+    }
+
+    public interface Drawable {
+        void graphic(Graphics2D g);
+
     }
 }

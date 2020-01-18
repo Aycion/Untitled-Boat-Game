@@ -2,6 +2,7 @@ package engine;
 
 import engine.assetmanager.AssetCenter;
 import engine.graphics.Camera;
+import engine.ecs.GameObject;
 import game.assets.Driftwood;
 import game.assets.Fortress;
 import game.Player;

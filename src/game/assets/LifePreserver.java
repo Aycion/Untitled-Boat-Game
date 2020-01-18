@@ -1,7 +1,7 @@
 package game.assets;
 
 import engine.EngineCore;
-import engine.GameObject;
+import engine.ecs.GameObject;
 import engine.Moveable;
 import engine.ResourceNotFound;
 import engine.colliders.CircleCollider;
@@ -25,15 +25,14 @@ public class LifePreserver extends GameObject implements Moveable, Collidable {
         this.speed = 15;
 
         this.sprite = new ShipSprite(this);
-        this.addGraphicsComponent(this.sprite);
+        this.attachComponent(this.sprite);
 
         this.lifePreserverCollider = new CircleCollider(
                 this,
                 10,
                 this.sprite.getWidth()
         );
-        this.addLogicComponent(this.lifePreserverCollider);
-        this.addGraphicsComponent(this.lifePreserverCollider);
+        this.attachComponent(this.lifePreserverCollider);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package game.assets.sprites;
 
 import engine.EngineCore;
-import engine.GameObject;
+import engine.ecs.GameObject;
 import engine.ResourceNotFound;
 import engine.graphics.SpriteImage;
 

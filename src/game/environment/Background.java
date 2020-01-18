@@ -1,16 +1,16 @@
 package game.environment;
 
-import engine.Component;
+import engine.ecs.GameComponent;
 import engine.EngineCore;
-import engine.GameClock;
-import engine.GameObject;
+import engine.ecs.GameObject;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class Background extends Component {
+public class Background extends GameComponent implements GameComponent.Drawable, GameComponent.Updatable {
 
+    // TODO - Split into two classes for Drawable and Updatable
     static final int DRAW_PADDING = 5;  // How many tiles to draw offscreen on each side
     BufferedImage mapImage;          // The image that will store the background
     WaterTexture texture;           // The tileable texture for the background
@@ -23,11 +23,11 @@ public class Background extends Component {
 
     /**
      *
-     * @param object
-     * @param texture
+     * @param parent the parent GameObject containing this object
+     * @param texture the texture to paint as the background
      */
-    public Background(GameObject object, WaterTexture texture) {
-        super(object);
+    public Background(GameObject parent, WaterTexture texture) {
+        super(parent);
 
 
         // Assign the texture the object will use to create the background
@@ -71,19 +71,6 @@ public class Background extends Component {
         return null;
     }
 
-    /**
-     * "Animation" function for resampling pixels. Incomplete and currently slow af.
-     *
-     * Intended to recreate the water shader from Wind Waker
-     * @return
-     */
-    public double sineDisplacement() {
-        float x = EngineCore.clock.getLastTime() / GameClock.timeUnitsPerSecond;
-        return (Math.sin(x) +
-                Math.sin((2.2 * x) + 5.52) +
-                Math.sin((2.9 * x) + 0.93) +
-                Math.sin((4.6 * x) + 8.94));
-    }
 
     /**
      * Construct the image to be used as the background of the game.
@@ -110,7 +97,6 @@ public class Background extends Component {
 
     @Override
     public void logic() {
-        super.logic();
         int camX = EngineCore.gameCamera.getViewOriginX();
         int camY = EngineCore.gameCamera.getViewOriginY();
 
@@ -124,18 +110,14 @@ public class Background extends Component {
      * NOTE: The graphics context passed as an argument is already transformed
      * relative to the camera
      *
-     * @param g
+     * @param g the graphics object inherited from the GUI
      */
     @Override
     public void graphic(Graphics2D g) {
-        super.graphic(g);
 
         AffineTransform afX = AffineTransform.getTranslateInstance(
                 this.drawOriginX, this.drawOriginY
         );
-
-//        g.setColor(this.waterBase);
-//        g.fillRect(drawOriginX, drawOriginY, this.areaSize, this.areaSize);
 
         g.drawImage(this.mapImage, afX, null);
     }

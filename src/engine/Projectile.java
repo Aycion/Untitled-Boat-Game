@@ -1,5 +1,7 @@
 package engine;
 
+import engine.ecs.GameObject;
+
 import java.awt.geom.AffineTransform;
 
 public class Projectile extends GameObject implements Moveable {

@@ -1,7 +1,7 @@
 package game.environment;
 
 import engine.EngineCore;
-import engine.GameObject;
+import engine.ecs.GameObject;
 
 import java.awt.geom.AffineTransform;
 

@@ -1,6 +1,7 @@
 package engine.graphics;
 
 import engine.*;
+import engine.ecs.GameObject;
 
 import java.awt.geom.AffineTransform;
 

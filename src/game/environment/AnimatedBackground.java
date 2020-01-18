@@ -1,7 +1,7 @@
 package game.environment;
 
 import engine.EngineCore;
-import engine.GameObject;
+import engine.ecs.GameObject;
 import engine.graphics.Animatable;
 
 import java.awt.image.BufferedImage;
@@ -14,11 +14,11 @@ public class AnimatedBackground extends Background implements Animatable {
 
     ArrayList<BufferedImage> backgroundImages;
     /**
-     * @param object
-     * @param texture
+     * @param parent the parent GameObject to hold this Component
+     * @param texture the animated texture to use for the background
      */
-    public AnimatedBackground(GameObject object, WaterAnimation texture) {
-        super(object, texture);
+    public AnimatedBackground(GameObject parent, WaterAnimation texture) {
+        super(parent, texture);
 
         this.backgroundImages = new ArrayList<>();
         this.animationFrames = texture.getNumFrames();
@@ -27,7 +27,7 @@ public class AnimatedBackground extends Background implements Animatable {
         this.animationDuration = 2;
 
         for (BufferedImage frame : texture.getAllFrames()) {
-            backgroundImages.add(this.constructMapView(frame));
+            this.backgroundImages.add(this.constructMapView(frame));
         }
     }
 
@@ -38,7 +38,7 @@ public class AnimatedBackground extends Background implements Animatable {
             this.animationPercent = 0;
         }
         this.imageIndex = (int) (this.animationPercent * this.animationFrames);
-        return backgroundImages.get(imageIndex);
+        return this.backgroundImages.get(this.imageIndex);
     }
 
     @Override

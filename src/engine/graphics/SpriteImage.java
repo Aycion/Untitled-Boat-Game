@@ -1,13 +1,13 @@
 package engine.graphics;
 
-import engine.Component;
-import engine.GameObject;
+import engine.ecs.GameComponent;
+import engine.ecs.GameObject;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class SpriteImage extends Component {
+public class SpriteImage extends GameComponent implements GameComponent.Drawable {
     protected BufferedImage spriteImg;
 
     public SpriteImage(GameObject parent, BufferedImage image) {
@@ -16,6 +16,10 @@ public class SpriteImage extends Component {
         this.priority = 1;
         this.spriteImg = image;
 
+    }
+
+    public SpriteImage(GameObject parent) {
+        super(parent);
     }
 
     public int getWidth() {
@@ -44,7 +48,6 @@ public class SpriteImage extends Component {
 
     @Override
     public void graphic(Graphics2D g) {
-        super.graphic(g);
         g.drawImage(
                 this.getSpriteImg(),
                 this.getGlobalTransform(),

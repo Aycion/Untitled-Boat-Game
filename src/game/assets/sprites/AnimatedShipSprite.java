@@ -1,24 +1,25 @@
 package game.assets.sprites;
 
 import engine.*;
-import engine.Component;
+import engine.ecs.GameComponent;
 import engine.graphics.Animatable;
+import engine.ecs.GameObject;
+import engine.graphics.SpriteImage;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class AnimatedShipSprite extends Component implements Animatable {
+public class AnimatedShipSprite extends SpriteImage implements Animatable {
     private ArrayList<BufferedImage> images;
     private int imageIndex, animationFrames;
     private double animationDuration, animationPercent;
 
-    // Creates a CyclingSprite and initializes it with the given List
     public AnimatedShipSprite(GameObject parent) throws ResourceNotFound {
         this(parent, EngineCore.assets.getImageList("shipanim.png"));
     }
-    // Creates an empty CyclingSprite
+
     public AnimatedShipSprite(GameObject parent, ArrayList<BufferedImage> images) {
         super(parent);
 
@@ -41,7 +42,7 @@ public class AnimatedShipSprite extends Component implements Animatable {
             this.animationPercent = 0;
         }
         this.imageIndex = (int) (this.animationPercent * this.animationFrames);
-        return images.get(imageIndex);
+        return this.images.get(this.imageIndex);
     }
 
     @Override
@@ -67,21 +68,16 @@ public class AnimatedShipSprite extends Component implements Animatable {
     }
 
     @Override
-    public void graphic(Graphics2D g) {
-        super.graphic(g);
-        g.drawImage(
-                this.getAnimationFrame(),
-                this.getGlobalTransform(),
-                null
-        );
+    public void logic() {
+        this.spriteImg = this.getAnimationFrame();
     }
 
     public int getWidth() {
-        return this.images.get(imageIndex).getWidth();
+        return this.images.get(this.imageIndex).getWidth();
     }
 
     public int getHeight() {
-        return this.images.get(imageIndex).getHeight();
+        return this.images.get(this.imageIndex).getHeight();
     }
 
 }

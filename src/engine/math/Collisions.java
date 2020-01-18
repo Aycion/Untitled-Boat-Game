@@ -70,12 +70,13 @@ public class Collisions {
      * @return
      */
     public static boolean testSATCollision(Area a, Area b) {
-        ArrayList<Point2D> verticesA, verticesB, normals;
+        ArrayList<Vector2D> verticesA, verticesB, normals;
 
         // Get the path iterators from the areas.
         verticesA = getAreaVertices(a.getPathIterator(null));
         verticesB = getAreaVertices(b.getPathIterator(null));
-        // Normals is a list of Vectors
+
+        // Get a list of the Vectors perpendicular to the polygon's faces
         normals = getNormals(verticesA);
         normals.addAll(getNormals(verticesB));
 
@@ -83,7 +84,7 @@ public class Collisions {
         double[] projA = new double[2],
                 projB = new double[2];
 
-        for (Point2D norm : normals) {
+        for (Vector2D norm : normals) {
             getProjection(verticesA, norm, projA);
             getProjection(verticesB, norm, projB);
 
@@ -97,14 +98,14 @@ public class Collisions {
         return true;
     }
 
-    private static ArrayList<Point2D> getAreaVertices(PathIterator path) {
+    private static ArrayList<Vector2D> getAreaVertices(PathIterator path) {
         double[] coords = new double[6];
-        ArrayList<Point2D> coordArray = new ArrayList<>();
+        ArrayList<Vector2D> coordArray = new ArrayList<>();
         for (; !path.isDone(); path.next()) {
 
             // Place the current vertex in the first two indices of coords
             path.currentSegment(coords);
-            coordArray.add(new Point2D.Double(coords[0], coords[1]));
+            coordArray.add(new Vector2D(coords[0], coords[1]));
         }
 
         // Add the first point to the end for ease of processing
@@ -112,41 +113,31 @@ public class Collisions {
         return coordArray;
     }
 
-    private static ArrayList<Point2D> getNormals(ArrayList<Point2D> verts) {
-        ArrayList<Point2D> normals = new ArrayList<>();
+    private static ArrayList<Vector2D> getNormals(ArrayList<Vector2D> verts) {
+        ArrayList<Vector2D> normals = new ArrayList<>();
 
         // Note: the last element of verts == the first; this will capture every edge
         for (int i = 0; i < verts.size() - 1; i++) {
-            Point2D a, b, norm;
+            Vector2D a, b, norm;
 
             a = verts.get(i);
             b = verts.get(i + 1);
 
             // Create a vector (represented just by a point) normal to the
             //  edge between i and i+1
-            norm = new Point2D.Double(-(b.getY() - a.getY()), b.getX() - a.getX());
+            norm = new Vector2D(-(b.getY() - a.getY()), b.getX() - a.getX());
             normals.add(norm);
         }
         return normals;
     }
 
-    private static void getProjection(ArrayList<Point2D> points, Point2D axis, double[] storeOut) {
+    private static void getProjection(ArrayList<Vector2D> vertices, Vector2D axis, double[] storeOut) {
         storeOut[0] = Double.MAX_VALUE;
         storeOut[1] = Double.MIN_VALUE;
-        for (Point2D p : points) {
-            double projection = dotProduct(p, axis);
+        for (Vector2D p : vertices) {
+            double projection = p.dotWith(axis);
             storeOut[0] = Math.min(projection, storeOut[0]);
             storeOut[1] = Math.max(projection, storeOut[1]);
-
-
         }
     }
-
-    private static double dotProduct(Point2D point, Point2D axis) {
-        double px = point.getX(), py = point.getY();
-        double ax = axis.getX(), ay = axis.getY();
-
-        return (px * ax) + (py * ay);
-    }
-
 }

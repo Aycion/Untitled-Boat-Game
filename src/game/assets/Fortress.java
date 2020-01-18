@@ -1,7 +1,7 @@
 package game.assets;
 
 import engine.EngineCore;
-import engine.GameObject;
+import engine.ecs.GameObject;
 import engine.ResourceNotFound;
 import engine.colliders.CircleCollider;
 import engine.colliders.Collidable;
@@ -19,12 +19,11 @@ public class Fortress extends GameObject implements Collidable {
         super(engine, transform);
 
         this.sprite = new FortressSprite(this);
-        this.addGraphicsComponent(this.sprite);
+        this.attachComponent(this.sprite);
 
         this.fortressCollider = new CircleCollider(this, 10, this.sprite.getWidth());
 
-        this.addLogicComponent(this.fortressCollider);
-        this.addGraphicsComponent(this.fortressCollider);
+        this.attachComponent(this.fortressCollider);
     }
 
     @Override
